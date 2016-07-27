@@ -21,7 +21,6 @@ class ShooterVision
 		ShapeFind redFinder;
 		ShapeFind greenFinder;
 		ShapeFind blackFinder;
-		
 	public:
 		
 	ShooterVision()
