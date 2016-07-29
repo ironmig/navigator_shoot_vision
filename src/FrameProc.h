@@ -41,4 +41,4 @@ class FrameProc
 		static Mat GetBlue();
 		static Mat GetGreen();
 		static Mat GetBlack();
-}
+};
