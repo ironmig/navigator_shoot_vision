@@ -7,6 +7,8 @@
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/opencv.hpp"
 
+#include "DebugWindow.h"
+
 using namespace cv;
 
 class FrameProc

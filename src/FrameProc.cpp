@@ -6,9 +6,13 @@ const int FrameProc::dilate_kernel_size = 3;
 
 FrameProc::FrameProc()
 {
-	cap = VideoCapture(1);
-	erode_element = getStructuringElement(MORPH_RECT,Size(erode_kernel_size,erode_kernel_size), Point(erode_kernel_size,erode_kernel_size)) ;
+
+	cap = VideoCapture(0);
+
+	erode_element = getStructuringElement(MORPH_RECT,Size(2*erode_kernel_size + 1,2*erode_kernel_size+1), Point(erode_kernel_size,erode_kernel_size)) ;
+
 	dilate_element = getStructuringElement(MORPH_RECT,Size( 2* dilate_kernel_size + 1, 2* dilate_kernel_size+1 ), Point(dilate_kernel_size, dilate_kernel_size));
+	std::cout << "1" << std::endl;
 	red = ColorThresh{Scalar(0,0,0),Scalar(255,255,255)};
 	blue = ColorThresh{Scalar(0,0,0),Scalar(255,255,255)};
 	green = ColorThresh{Scalar(0,0,0),Scalar(255,255,255)};
@@ -22,8 +26,9 @@ void FrameProc::GetFrame()
 {
 	if (!cap.read(rgb_frame))
 	{
-		std::cerr << "Could not read frame" << std::endl;
+		std::cout << "Could not read frame" << std::endl;
 	}
+	DebugWindow::UpdateColor(rgb_frame);
 }
 void FrameProc::ErodeDilate()
 {
@@ -57,13 +62,17 @@ void FrameProc::Prepare()
 }
 Mat FrameProc::GetRed()
 {
+	DebugWindow::UpdateRed(binary_red_frame);
 	return binary_red_frame;
 }
 Mat FrameProc::GetBlue()
 {
+
+	DebugWindow::UpdateBlue(binary_blue_frame);
 	return binary_blue_frame;
 }
 Mat FrameProc::GetGreen()
 {
+	DebugWindow::UpdateGreen(binary_green_frame);
 	return binary_green_frame;
 }

@@ -9,6 +9,8 @@
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/opencv.hpp"
+#include "DebugWindow.h"
+
 
 using namespace cv;
 
@@ -30,24 +32,27 @@ class ShooterVision
 		redFinder(ShapeFind::RED),
 		greenFinder(ShapeFind::GREEN)
 	{
-
+		DebugWindow::init();
 	}
 
 	void run()
 	{
+		std::cout << "Running frame" << std::endl;
 		//Grab ros frame
 
 		//Convert Ros frame to opencv
 
 		//Process frame
 		fp.Prepare();
-
-		shapes.clear();
+		std::cout << "Prepared" << std::endl;
+;
+		//shapes.clear();
 		//Find shapes in each color
-		blueFinder.GetShapes(fp.GetBlue(),shapes);
-		redFinder.GetShapes(fp.GetRed(),shapes);
-		greenFinder.GetShapes(fp.GetGreen(),shapes);
+		//blueFinder.GetShapes(fp.GetBlue(),shapes);
+		//redFinder.GetShapes(fp.GetRed(),shapes);
+		//greenFinder.GetShapes(fp.GetGreen(),shapes);
 		//Publish to ros
+		waitKey(25)
 	}
 };
 
