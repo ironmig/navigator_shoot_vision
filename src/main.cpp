@@ -52,7 +52,7 @@ class ShooterVision
 		//redFinder.GetShapes(fp.GetRed(),shapes);
 		//greenFinder.GetShapes(fp.GetGreen(),shapes);
 		//Publish to ros
-		waitKey(25)
+		waitKey(25);
 	}
 };
 
