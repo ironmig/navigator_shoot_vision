@@ -17,16 +17,20 @@ class ShooterVision
 	private:
 		//ros frame thing
 		std::vector <ShapeFind::Result> shapes;
-		ShapeFind bluefinder;
+		FrameProc fp;
+		ShapeFind blueFinder;
 		ShapeFind redFinder;
 		ShapeFind greenFinder;
-		ShapeFind blackFinder;
 		
 	public:
 		
-	ShooterVision()
+	ShooterVision() : 
+		fp(),
+		blueFinder(ShapeFind::BLUE),
+		redFinder(ShapeFind::RED),
+		greenFinder(ShapeFind::GREEN)
 	{
-		//init ShapeFind's, frames
+
 	}
 
 	void run()
@@ -36,12 +40,22 @@ class ShooterVision
 		//Convert Ros frame to opencv
 
 		//Process frame
-		FrameProc::Prepare(frame);
+		fp.Prepare();
 
+		shapes.clear();
 		//Find shapes in each color
-		shapes.insert ( blueFinder.GetShapes(FrameProc::GetBlue()) )
-		//do for other colors
-
+		blueFinder.GetShapes(fp.GetBlue(),shapes);
+		redFinder.GetShapes(fp.GetRed(),shapes);
+		greenFinder.GetShapes(fp.GetGreen(),shapes);
 		//Publish to ros
 	}
 };
+
+int main()
+{
+	ShooterVision sv = ShooterVision();
+	while (1)
+	{
+		sv.run();
+	}
+}

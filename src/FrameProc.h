@@ -1,4 +1,6 @@
 //Grabs frame from ROS, erode/dilate, converts to HSV, produces Red Green Blue Black binary frames;
+#ifndef FROM_PROC_H
+#define FROM_PROC_H
 
 #include "opencv2/core/core.hpp"
 #include "opencv2/highgui/highgui.hpp"
@@ -6,19 +8,22 @@
 #include "opencv2/opencv.hpp"
 
 using namespace cv;
+
 class FrameProc
 {
 	private:
-		const int height = 480;
-		const int width = 640;
-		const int blur_kernel_size = 3;
-		const int erode_kernel_size = 3;
-		const int dilate_kernel_size = 3;
-		typedef struct ColorThresh
+		//const int height = 480;
+		//const int width = 640;
+		static const int blur_kernel_size;
+		static const int erode_kernel_size;
+		static const int dilate_kernel_size;
+		Mat erode_element;
+		Mat dilate_element;
+		struct ColorThresh
 		{
 			Scalar low;
 			Scalar high;
-		}
+		};
 		ColorThresh red;
 		ColorThresh blue;
 		ColorThresh green;
@@ -29,16 +34,18 @@ class FrameProc
 		Mat binary_blue_frame;
 		Mat binary_red_frame;
 		Mat binary_green_frame;
-		Mat binary_black_frame;
 
-		static void GetFrame();
-		static void ErodeDilate();
-		static void ConvertHSV();
-		static void ThresholdColors();
+		void GetFrame();
+		void ErodeDilate();
+		void ConvertHSV();
+		void ThresholdColors();
 	public:
-		static void Prepare(Mat frame);
-		static Mat GetRed();
-		static Mat GetBlue();
-		static Mat GetGreen();
-		static Mat GetBlack();
+		FrameProc();
+		void Prepare(Mat frame);
+		void Prepare();
+		Mat GetRed();
+		Mat GetBlue();
+		Mat GetGreen();
 };
+
+#endif
