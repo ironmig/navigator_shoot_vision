@@ -9,6 +9,7 @@
 
 #include "navigator_shoot_vision/Symbols.h"
 
+#include "ShapeDetector.h"
 using namespace cv;
 class ShapeFind {
   public:

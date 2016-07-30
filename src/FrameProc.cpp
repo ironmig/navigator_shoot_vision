@@ -12,9 +12,9 @@ FrameProc::FrameProc()
 	erode_element = getStructuringElement(MORPH_RECT,Size(2*erode_kernel_size + 1,2*erode_kernel_size+1), Point(erode_kernel_size,erode_kernel_size)) ;
 
 	dilate_element = getStructuringElement(MORPH_RECT,Size( 2* dilate_kernel_size + 1, 2* dilate_kernel_size+1 ), Point(dilate_kernel_size, dilate_kernel_size));
-	red = ColorThresh{cv::Scalar(0, 100, 100), cv::Scalar(10, 255, 255)};
-	blue = ColorThresh{Scalar(0,0,0),Scalar(255,255,255)};
-	green = ColorThresh{Scalar(0,0,0),Scalar(255,255,255)};
+	red = ColorThresh{cv::Scalar(0, 0, 100), cv::Scalar(10, 255, 255)};
+	blue = ColorThresh{Scalar(100,0,0),Scalar(255,255,255)};
+	green = ColorThresh{Scalar(0,100,0),Scalar(255,255,255)};
 	rgb_frame = Mat();
 	hsv_frame = Mat();
 	binary_blue_frame = Mat();

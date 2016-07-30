@@ -25,7 +25,7 @@ catkin_package(
 
 include_directories(include ${catkin_INCLUDE_DIRS})
 
-add_executable(vision src/main.cpp src/FrameProc.cpp src/ShapeFind.cpp src/DebugWindow.cpp)
+add_executable(vision src/main.cpp src/FrameProc.cpp src/ShapeFind.cpp src/DebugWindow.cpp src/ShapeDetector.cpp)
 target_link_libraries(vision ${catkin_LIBRARIES})
 find_package( OpenCV REQUIRED )
 target_link_libraries(vision ${OpenCV_LIBS} )
