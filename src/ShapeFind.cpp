@@ -33,7 +33,7 @@ Point ShapeFind::findCenter(std::vector<Point> points) {
     return Point(x, y);
 }
 
-void ShapeFind::GetShapes(Mat frame, std::vector<Result> results)
+void ShapeFind::GetShapes(Mat frame, std::vector<Result>* results)
 {
     binary_frame = frame.clone();
     if (binary_frame.empty())
@@ -49,13 +49,13 @@ void ShapeFind::GetShapes(Mat frame, std::vector<Result> results)
             hold.center = findCenter(shapes[i]);
             hold.color = parseColor;
             hold.shape = CROSS;
-            results.push_back(hold);
+            results->push_back(hold);
         } else if (shapes[i].size() == 3) {
             Result hold;
             hold.center = findCenter(shapes[i]);
             hold.color = parseColor;
             hold.shape = CROSS;
-            results.push_back(hold);
+            results->push_back(hold);
         }
     }
 }

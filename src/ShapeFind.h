@@ -10,15 +10,15 @@
 using namespace cv;
 class ShapeFind {
   public:
-    enum Color { RED, BLUE, GREEN, BLACK };
-    enum Shape { CROSS, TRIANGLE, CIRLCE };
+    enum Color { RED,BLUE, GREEN };
+    enum Shape { CROSS, TRIANGLE, CIRCLE };
     struct Result {
         Point center;
         Color color;
         Shape shape;
     };
     ShapeFind(Color c);
-    void GetShapes(Mat frame, std::vector<Result> results);
+    void GetShapes(Mat frame, std::vector<Result>* results);
   private:
     Color parseColor;
     Mat binary_frame;

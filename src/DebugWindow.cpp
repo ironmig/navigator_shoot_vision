@@ -44,4 +44,8 @@ void DebugWindow::UpdateGreen(Mat frame)
 void DebugWindow::UpdateResults(std::vector<ShapeFind::Result> rs)
 {
 	results = rs;
+	for (std::vector<ShapeFind::Result>::iterator it = results.begin();it != results.end(); it++)
+	{
+		std::cout <<  "Color: " << (*it).color << " Shape: " << (*it).shape << std::endl;
+	}
 }

@@ -11,6 +11,7 @@
 #include "opencv2/opencv.hpp"
 #include "DebugWindow.h"
 
+#include "navigator_shoot_vision/Symbol.h"
 
 using namespace cv;
 
@@ -46,11 +47,11 @@ class ShooterVision
 		shapes.clear();
 		
 		//Find shapes in each color
-		blueFinder.GetShapes(fp.GetBlue(),shapes);
-		redFinder.GetShapes(fp.GetRed(),shapes);
-		greenFinder.GetShapes(fp.GetGreen(),shapes);
+		blueFinder.GetShapes(fp.GetBlue(),&shapes);
+		redFinder.GetShapes(fp.GetRed(),&shapes);
+		greenFinder.GetShapes(fp.GetGreen(),&shapes);
 		//Publish to ros
-		
+		DebugWindow::UpdateResults(shapes);
 	}
 };
 
