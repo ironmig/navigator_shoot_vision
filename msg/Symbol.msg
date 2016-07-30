@@ -1,0 +1,12 @@
+char Shape
+char CROSS=112 #p
+char TRIANGLE = 116 #t
+char CIRCLE = 99 #c
+
+char Color
+char RED = 114 #r
+char BLUE = 98 #b
+char GREEN = 103 #g
+
+uint32 CenterX
+uint32 CenterY
