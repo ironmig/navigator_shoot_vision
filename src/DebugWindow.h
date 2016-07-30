@@ -12,7 +12,7 @@
 
 
 #include "ShapeFind.h"
-
+#include "navigator_shoot_vision/Symbols.h"
 
 using namespace cv;
 class DebugWindow
@@ -22,14 +22,14 @@ class DebugWindow
 		static Mat red_frame;
 		static Mat green_frame;
 		static Mat blue_frame;
-		static std::vector<ShapeFind::Result> results;
+		static navigator_shoot_vision::Symbols symbols;
 	public:
 		static void init();
 		static void UpdateColor(Mat frame);
 		static void UpdateRed(Mat frame);
 		static void UpdateBlue(Mat frame);
 		static void UpdateGreen(Mat frame);
-		static void UpdateResults(std::vector<ShapeFind::Result> rss);
+		static void UpdateResults(navigator_shoot_vision::Symbols s);
 		static void DrawAll();
 };
 

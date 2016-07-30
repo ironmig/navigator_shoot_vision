@@ -1,7 +1,7 @@
 #include "ShapeFind.h"
 
-ShapeFind::ShapeFind(Color c) { 
-	parseColor = c; 
+ShapeFind::ShapeFind(char color) { 
+	parseColor = color;
     binary_frame = Mat();
     contoursfindMat = std::vector< std::vector<Point> >();
     hierarchyfindMat = std::vector<Vec4i>();
@@ -32,10 +32,9 @@ Point ShapeFind::findCenter(std::vector<Point> points) {
     y /= points.size();
     return Point(x, y);
 }
-
-void ShapeFind::GetShapes(Mat frame, std::vector<Result>* results)
+void ShapeFind::GetSymbols(Mat frame, navigator_shoot_vision::Symbols* symbols)
 {
-    binary_frame = frame.clone();
+	binary_frame = frame.clone();
     if (binary_frame.empty())
     {
 		std::cerr << "frame too small" << std::endl;
@@ -45,17 +44,21 @@ void ShapeFind::GetShapes(Mat frame, std::vector<Result>* results)
     FindShapes();
     for (int i = 0; i < shapes.size(); i++) {
         if (shapes[i].size() == 12) {
-            Result hold;
-            hold.center = findCenter(shapes[i]);
-            hold.color = parseColor;
-            hold.shape = CROSS;
-            results->push_back(hold);
+            navigator_shoot_vision::Symbol hold;
+            Point center =  findCenter(shapes[i]);
+            hold.CenterX = center.x;
+            hold.CenterY = center.y;
+            hold.Color = parseColor;
+            hold.Shape = navigator_shoot_vision::Symbol::CROSS;
+            symbols->list.push_back(hold);
         } else if (shapes[i].size() == 3) {
-            Result hold;
-            hold.center = findCenter(shapes[i]);
-            hold.color = parseColor;
-            hold.shape = CROSS;
-            results->push_back(hold);
+			navigator_shoot_vision::Symbol hold;
+            Point center =  findCenter(shapes[i]);
+            hold.CenterX = center.x;
+            hold.CenterY = center.y;
+            hold.Color = parseColor;
+            hold.Shape = navigator_shoot_vision::Symbol::TRIANGLE;
+            symbols->list.push_back(hold);
         }
     }
 }

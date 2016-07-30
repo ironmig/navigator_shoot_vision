@@ -5,7 +5,7 @@ Mat DebugWindow::color_frame = Mat();
 Mat  DebugWindow::red_frame = Mat();
 Mat  DebugWindow::green_frame = Mat();
 Mat  DebugWindow::blue_frame = Mat();
-std::vector<ShapeFind::Result>  DebugWindow::results = std::vector<ShapeFind::Result>();
+navigator_shoot_vision::Symbols  DebugWindow::symbols = navigator_shoot_vision::Symbols();
 
 void DebugWindow::init()
 {
@@ -13,7 +13,7 @@ void DebugWindow::init()
 	red_frame = Mat();
 	blue_frame = Mat();
 	green_frame = Mat();
-	results = std::vector<ShapeFind::Result>();
+	symbols = navigator_shoot_vision::Symbols();
 	namedWindow("color",CV_WINDOW_AUTOSIZE);
 	namedWindow("red",CV_WINDOW_AUTOSIZE);
 	namedWindow("blue",CV_WINDOW_AUTOSIZE);
@@ -41,11 +41,11 @@ void DebugWindow::UpdateGreen(Mat frame)
 	green_frame = frame;
 	imshow("green",green_frame);
 }
-void DebugWindow::UpdateResults(std::vector<ShapeFind::Result> rs)
+void DebugWindow::UpdateResults(navigator_shoot_vision::Symbols symbols)
 {
-	results = rs;
-	for (std::vector<ShapeFind::Result>::iterator it = results.begin();it != results.end(); it++)
-	{
-		std::cout <<  "Color: " << (*it).color << " Shape: " << (*it).shape << std::endl;
-	}
+	//results = rs;
+	//for (std::vector<ShapeFind::Result>::iterator it = results.begin();it != results.end(); it++)
+	//{
+	//	std::cout <<  "Color: " << (*it).color << " Shape: " << (*it).shape << std::endl;
+	//}
 }

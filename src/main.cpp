@@ -11,7 +11,7 @@
 #include "opencv2/opencv.hpp"
 #include "DebugWindow.h"
 
-#include "navigator_shoot_vision/Symbol.h"
+#include "navigator_shoot_vision/Symbols.h"
 
 using namespace cv;
 
@@ -19,7 +19,7 @@ class ShooterVision
 {
 	private:
 		//ros frame thing
-		std::vector <ShapeFind::Result> shapes;
+		navigator_shoot_vision::Symbols symbols;
 		FrameProc fp;
 		ShapeFind blueFinder;
 		ShapeFind redFinder;
@@ -29,11 +29,12 @@ class ShooterVision
 		
 	ShooterVision() : 
 		fp(),
-		blueFinder(ShapeFind::BLUE),
-		redFinder(ShapeFind::RED),
-		greenFinder(ShapeFind::GREEN)
+		blueFinder(navigator_shoot_vision::Symbol::BLUE),
+		redFinder(navigator_shoot_vision::Symbol::RED),
+		greenFinder(navigator_shoot_vision::Symbol::GREEN)
 	{
 		DebugWindow::init();
+		symbols = navigator_shoot_vision::Symbols();
 	}
 
 	void run()
@@ -44,14 +45,14 @@ class ShooterVision
 
 		//Process frame
 		fp.Prepare();
-		shapes.clear();
+		symbols.list.clear();
 		
 		//Find shapes in each color
-		blueFinder.GetShapes(fp.GetBlue(),&shapes);
-		redFinder.GetShapes(fp.GetRed(),&shapes);
-		greenFinder.GetShapes(fp.GetGreen(),&shapes);
+		blueFinder.GetSymbols(fp.GetBlue(),&symbols);
+		redFinder.GetSymbols(fp.GetRed(),&symbols);
+		greenFinder.GetSymbols(fp.GetGreen(),&symbols);
 		//Publish to ros
-		DebugWindow::UpdateResults(shapes);
+		DebugWindow::UpdateResults(symbols);
 	}
 };
 

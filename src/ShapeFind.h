@@ -7,20 +7,15 @@
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/opencv.hpp"
 
+#include "navigator_shoot_vision/Symbols.h"
+
 using namespace cv;
 class ShapeFind {
   public:
-    enum Color { RED,BLUE, GREEN };
-    enum Shape { CROSS, TRIANGLE, CIRCLE };
-    struct Result {
-        Point center;
-        Color color;
-        Shape shape;
-    };
-    ShapeFind(Color c);
-    void GetShapes(Mat frame, std::vector<Result>* results);
+    ShapeFind(char color);
+    void GetSymbols(Mat frame, navigator_shoot_vision::Symbols* symbols);
   private:
-    Color parseColor;
+    char parseColor;
     Mat binary_frame;
     std::vector< std::vector<Point> > contoursfindMat;
     std::vector<Vec4i> hierarchyfindMat;
