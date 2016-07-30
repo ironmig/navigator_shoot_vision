@@ -12,8 +12,7 @@ FrameProc::FrameProc()
 	erode_element = getStructuringElement(MORPH_RECT,Size(2*erode_kernel_size + 1,2*erode_kernel_size+1), Point(erode_kernel_size,erode_kernel_size)) ;
 
 	dilate_element = getStructuringElement(MORPH_RECT,Size( 2* dilate_kernel_size + 1, 2* dilate_kernel_size+1 ), Point(dilate_kernel_size, dilate_kernel_size));
-	std::cout << "1" << std::endl;
-	red = ColorThresh{Scalar(0,0,0),Scalar(255,255,255)};
+	red = ColorThresh{cv::Scalar(0, 100, 100), cv::Scalar(10, 255, 255)};
 	blue = ColorThresh{Scalar(0,0,0),Scalar(255,255,255)};
 	green = ColorThresh{Scalar(0,0,0),Scalar(255,255,255)};
 	rgb_frame = Mat();
@@ -21,23 +20,28 @@ FrameProc::FrameProc()
 	binary_blue_frame = Mat();
 	binary_red_frame = Mat();
 	binary_green_frame = Mat();
+	
+	namedWindow("blured",CV_WINDOW_AUTOSIZE);
+	namedWindow("hsv",CV_WINDOW_AUTOSIZE);
 }
 void FrameProc::GetFrame()
 {
 	if (!cap.read(rgb_frame))
 	{
-		std::cout << "Could not read frame" << std::endl;
+		std::cerr << "Could not read frame" << std::endl;
 	}
-	DebugWindow::UpdateColor(rgb_frame);
+
 }
 void FrameProc::ErodeDilate()
 {
 	erode(rgb_frame,rgb_frame,erode_element);
 	dilate(rgb_frame,rgb_frame,dilate_element);
+
 }
 void FrameProc::ConvertHSV()
 {
 	cvtColor(rgb_frame,hsv_frame,CV_BGR2HSV);
+
 }
 void FrameProc::ThresholdColors()
 {
@@ -56,23 +60,26 @@ void FrameProc::Prepare(Mat frame)
 void FrameProc::Prepare()
 {
 	GetFrame();
+	DebugWindow::UpdateColor(rgb_frame);
 	ErodeDilate();
 	ConvertHSV();
 	ThresholdColors();
+	
+	imshow("blured",rgb_frame);
+	imshow("hsv",hsv_frame);
+	DebugWindow::UpdateRed(binary_red_frame);
+	DebugWindow::UpdateBlue(binary_blue_frame);
+	DebugWindow::UpdateGreen(binary_green_frame);
 }
 Mat FrameProc::GetRed()
 {
-	DebugWindow::UpdateRed(binary_red_frame);
 	return binary_red_frame;
 }
 Mat FrameProc::GetBlue()
 {
-
-	DebugWindow::UpdateBlue(binary_blue_frame);
 	return binary_blue_frame;
 }
 Mat FrameProc::GetGreen()
 {
-	DebugWindow::UpdateGreen(binary_green_frame);
 	return binary_green_frame;
 }

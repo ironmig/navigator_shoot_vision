@@ -37,30 +37,29 @@ class ShooterVision
 
 	void run()
 	{
-		std::cout << "Running frame" << std::endl;
 		//Grab ros frame
 
 		//Convert Ros frame to opencv
 
 		//Process frame
 		fp.Prepare();
-		std::cout << "Prepared" << std::endl;
-;
-		//shapes.clear();
+		shapes.clear();
+		
 		//Find shapes in each color
-		//blueFinder.GetShapes(fp.GetBlue(),shapes);
-		//redFinder.GetShapes(fp.GetRed(),shapes);
-		//greenFinder.GetShapes(fp.GetGreen(),shapes);
+		blueFinder.GetShapes(fp.GetBlue(),shapes);
+		redFinder.GetShapes(fp.GetRed(),shapes);
+		greenFinder.GetShapes(fp.GetGreen(),shapes);
 		//Publish to ros
-		waitKey(25);
+		
 	}
 };
 
 int main()
 {
 	ShooterVision sv = ShooterVision();
-	while (1)
+	while (waitKey(50) == -1)
 	{
 		sv.run();
 	}
+	std::cout << "Key detected, exiting" << std::endl;
 }

@@ -18,7 +18,7 @@ void DebugWindow::init()
 	namedWindow("red",CV_WINDOW_AUTOSIZE);
 	namedWindow("blue",CV_WINDOW_AUTOSIZE);
 	namedWindow("green",CV_WINDOW_AUTOSIZE);
-	std::cout << "inited" << std::endl;
+	std::cout << "Running GUI Debug mode" << std::endl;
 }
 
 void DebugWindow::UpdateColor(Mat frame)
