@@ -12,9 +12,13 @@ FrameProc::FrameProc()
 	erode_element = getStructuringElement(MORPH_RECT,Size(2*erode_kernel_size + 1,2*erode_kernel_size+1), Point(erode_kernel_size,erode_kernel_size)) ;
 
 	dilate_element = getStructuringElement(MORPH_RECT,Size( 2* dilate_kernel_size + 1, 2* dilate_kernel_size+1 ), Point(dilate_kernel_size, dilate_kernel_size));
-	red = ColorThresh{cv::Scalar(0, 0, 100), cv::Scalar(10, 255, 255)};
-	blue = ColorThresh{Scalar(100,0,0),Scalar(255,255,255)};
-	green = ColorThresh{Scalar(0,100,0),Scalar(255,255,255)};
+//	red = ColorThresh{cv::Scalar(15, 15, 125), cv::Scalar(150, 150, 255)};
+//	blue = ColorThresh{Scalar(125,15,15),Scalar(255,150,150)};
+//	green = ColorThresh{Scalar(15, 50, 15),Scalar(150,255,150)};
+	red = ColorThresh{cv::Scalar(0, 100, 100), cv::Scalar(9, 255, 255)};
+	red2 = ColorThresh{cv::Scalar(165, 100, 1000), cv::Scalar(179, 255, 255)};
+	blue = ColorThresh{Scalar(70,100,100),Scalar(130,255,255)};
+	green = ColorThresh{Scalar(35, 100, 100),Scalar(69,255,255)};
 	rgb_frame = Mat();
 	hsv_frame = Mat();
 	binary_blue_frame = Mat();
@@ -26,10 +30,12 @@ FrameProc::FrameProc()
 }
 void FrameProc::GetFrame()
 {
-	if (!cap.read(rgb_frame))
-	{
-		std::cerr << "Could not read frame" << std::endl;
-	}
+//	if (!cap.read(rgb_frame))
+//	{
+//		std::cerr << "Could not read frame" << std::endl;
+//	}
+rgb_frame=imread("/home/daniel/catkin_ws/src/navigator_shoot_vision/crossred.jpg", CV_LOAD_IMAGE_COLOR);
+
 
 }
 void FrameProc::ErodeDilate()
@@ -45,14 +51,20 @@ void FrameProc::ConvertHSV()
 }
 void FrameProc::ThresholdColors()
 {
-	inRange(hsv_frame,red.low,red.high,binary_red_frame);
+//	inRange(rgb_frame,red.low,red.high,binary_red_frame);
+//	inRange(rgb_frame,blue.low,blue.high,binary_blue_frame);
+//	inRange(rgb_frame,green.low,green.high,binary_green_frame);
+	Mat rtemp, rtemp2;
+	inRange(hsv_frame,red.low,red.high,rtemp);
+	inRange(hsv_frame,red2.low,red2.high,rtemp2);
+	binary_red_frame = rtemp | rtemp2;
 	inRange(hsv_frame,blue.low,blue.high,binary_blue_frame);
 	inRange(hsv_frame,green.low,green.high,binary_green_frame);
 }
 void FrameProc::Prepare(Mat frame)
 {
 	rgb_frame = frame;
-	ErodeDilate();
+//	ErodeDilate();
 	ConvertHSV();
 	ThresholdColors();
 

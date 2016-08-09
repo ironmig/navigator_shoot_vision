@@ -37,8 +37,8 @@ void DebugWindow::UpdateGreen(Mat frame) {
 }
 void DebugWindow::UpdateResults(navigator_shoot_vision::Symbols symbols) {
     for (int i = 0; i < symbols.list.size(); i++) {
-        cv::Rect p = cv::Rect(symbols.list[i].CenterX, symbols.list[i].CenterY, 10, 10);
-        cv::rectangle(color_frame, p.tl(), p.br(), cv::Scalar(100, 0, 0));
+        cv::Rect p = cv::Rect(symbols.list[i].CenterX-50, symbols.list[i].CenterY-50, 100, 100);
+        cv::rectangle(color_frame, p.tl(), p.br(), cv::Scalar(100, 100, 100));
         if (symbols.list[i].Shape == navigator_shoot_vision::Symbol::CROSS)
             std::cout << "cross " << p.x << ", " << p.y << " " <<symbols.list[i].Color<<std::endl;
         if (symbols.list[i].Shape == navigator_shoot_vision::Symbol::TRIANGLE)

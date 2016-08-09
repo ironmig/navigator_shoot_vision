@@ -27,6 +27,7 @@ class FrameProc
 			Scalar high;
 		};
 		ColorThresh red;
+		ColorThresh red2;
 		ColorThresh blue;
 		ColorThresh green;
 		VideoCapture cap;
