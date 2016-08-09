@@ -15,8 +15,8 @@ FrameProc::FrameProc()
 //	red = ColorThresh{cv::Scalar(15, 15, 125), cv::Scalar(150, 150, 255)};
 //	blue = ColorThresh{Scalar(125,15,15),Scalar(255,150,150)};
 //	green = ColorThresh{Scalar(15, 50, 15),Scalar(150,255,150)};
-	red = ColorThresh{cv::Scalar(0, 100, 100), cv::Scalar(9, 255, 255)};
-	red2 = ColorThresh{cv::Scalar(165, 100, 1000), cv::Scalar(179, 255, 255)};
+	red = ColorThresh{Scalar(0, 100, 100), Scalar(9, 255, 255)};
+	red2 = ColorThresh{Scalar(165, 100, 1000), Scalar(179, 255, 255)};
 	blue = ColorThresh{Scalar(70,100,100),Scalar(130,255,255)};
 	green = ColorThresh{Scalar(35, 100, 100),Scalar(69,255,255)};
 	rgb_frame = Mat();
