@@ -54,12 +54,6 @@ bool ShapeDetector::boundingAreaTriangle(std::vector<cv::Point> &points) {
         return true;
     return false;
 }
-bool ShapeDetector::boundingAreaCircle() {
-    //	      cv::Rect boundingRect = cv::boundingRect(points);
-    //	      float area = contourArea(points)/(boundingRect.width*boundingRect.height);
-    //	      if(area >= .73 && area <= .83) return true;
-    //	      return false;
-}
 
 bool ShapeDetector::angleTestCross(std::vector<cv::Point> &points) {
     std::vector<float> angles;
@@ -91,4 +85,14 @@ bool ShapeDetector::angleTestTriangle(std::vector<cv::Point> &points) {
         return true;
     }
     return false;
+}
+
+bool ShapeDetector::testAngleCircle(std::vector<cv::Point> &points) {
+	float a = contourArea(points);
+	float p = arcLength(points, true);
+	float r = 4 * 3.1415 * a / (p * p);
+	if(r > 0.9 && r < 1.1)
+		return true;
+	return false;
+
 }

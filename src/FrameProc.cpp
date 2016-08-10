@@ -16,7 +16,7 @@ FrameProc::FrameProc()
 //	blue = ColorThresh{Scalar(125,15,15),Scalar(255,150,150)};
 //	green = ColorThresh{Scalar(15, 50, 15),Scalar(150,255,150)};
 	red = ColorThresh{Scalar(0, 100, 100), Scalar(9, 255, 255)};
-	red2 = ColorThresh{Scalar(165, 100, 1000), Scalar(179, 255, 255)};
+	red2 = ColorThresh{Scalar(160, 100, 1000), Scalar(180, 255, 255)};
 	blue = ColorThresh{Scalar(70,100,100),Scalar(130,255,255)};
 	green = ColorThresh{Scalar(35, 100, 100),Scalar(69,255,255)};
 	rgb_frame = Mat();
@@ -42,6 +42,7 @@ void FrameProc::ErodeDilate()
 {
 	erode(rgb_frame,rgb_frame,erode_element);
 	dilate(rgb_frame,rgb_frame,dilate_element);
+//	GaussianBlur(rgb_frame, rgb_frame, Size(9, 9), 2, 2 );
 
 }
 void FrameProc::ConvertHSV()
@@ -64,7 +65,7 @@ void FrameProc::ThresholdColors()
 void FrameProc::Prepare(Mat frame)
 {
 	rgb_frame = frame;
-//	ErodeDilate();
+	ErodeDilate();
 	ConvertHSV();
 	ThresholdColors();
 

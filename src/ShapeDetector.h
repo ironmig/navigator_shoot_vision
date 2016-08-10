@@ -14,12 +14,13 @@ class ShapeDetector {
 	//Not the best way... but meh, customization
 	static bool boundingAreaCross(std::vector<cv::Point> &points);
 	static bool boundingAreaTriangle(std::vector<cv::Point> &points);
-	static bool boundingAreaCircle(); //Either with points or with Mat?
+	static bool boundingAreaCircle(std::vector<cv::Point> &points); //Either with points or with Mat?
 	
 	static bool angleTestCross(std::vector<cv::Point> &points);
 	static bool angleTestTriangle(std::vector<cv::Point> &points);
-	static bool angleTestCirlce(); //Maybe
+	static bool angleTestCirlce(std::vector<cv::Point> &points); //Maybe
 	
+	static bool testRatioCircle(std::vector<cv::Point> &points);
 	
 };
 
