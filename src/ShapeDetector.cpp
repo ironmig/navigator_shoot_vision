@@ -50,7 +50,8 @@ bool ShapeDetector::boundingAreaCross(std::vector<cv::Point> &points) {
 bool ShapeDetector::boundingAreaTriangle(std::vector<cv::Point> &points) {
     cv::Rect boundingRect = cv::boundingRect(points);
     float area = contourArea(points) / (boundingRect.width * boundingRect.height);
-    if (area >= .41 && area <= .45)
+
+    if (area >= .41 && area <= .5)
         return true;
     return false;
 }
@@ -65,6 +66,7 @@ bool ShapeDetector::angleTestCross(std::vector<cv::Point> &points) {
     float var = findVarience(angles);
 
     if (chi < 20 && var < 25) {
+
         return true;
     }
     return false;
@@ -81,6 +83,7 @@ bool ShapeDetector::angleTestTriangle(std::vector<cv::Point> &points) {
     float var = findVarience(angles);
     //            std::cout << "result: " << chi << std::endl;
     //            std::cout << "result: " << chi << " Mean: " << mean << " Var: " << var << std::endl;
+
     if (chi < 20 && var < 25) {
         return true;
     }

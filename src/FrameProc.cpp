@@ -16,7 +16,7 @@ FrameProc::FrameProc()
 //	blue = ColorThresh{Scalar(125,15,15),Scalar(255,150,150)};
 //	green = ColorThresh{Scalar(15, 50, 15),Scalar(150,255,150)};
 	red = ColorThresh{Scalar(0, 100, 100), Scalar(9, 255, 255)};
-	red2 = ColorThresh{Scalar(160, 100, 1000), Scalar(180, 255, 255)};
+	red2 = ColorThresh{Scalar(160, 100, 100), Scalar(180, 255, 255)};
 	blue = ColorThresh{Scalar(70,100,100),Scalar(130,255,255)};
 	green = ColorThresh{Scalar(35, 100, 100),Scalar(69,255,255)};
 	rgb_frame = Mat();
@@ -35,6 +35,8 @@ void FrameProc::GetFrame()
 //		std::cerr << "Could not read frame" << std::endl;
 //	}
 rgb_frame=imread("/home/daniel/catkin_ws/src/navigator_shoot_vision/crossred.jpg", CV_LOAD_IMAGE_COLOR);
+
+
 
 
 }
