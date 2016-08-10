@@ -87,7 +87,7 @@ bool ShapeDetector::angleTestTriangle(std::vector<cv::Point> &points) {
     return false;
 }
 
-bool ShapeDetector::testAngleCircle(std::vector<cv::Point> &points) {
+bool ShapeDetector::testRatioCircle(std::vector<cv::Point> &points) {
 	float a = contourArea(points);
 	float p = arcLength(points, true);
 	float r = 4 * 3.1415 * a / (p * p);
