@@ -125,7 +125,7 @@ bool ShapeDetector::angleTestTriangle(std::vector<cv::Point> &points) { //Assumi
 //	std::cout<<v2<<" "<<v<<" "<<v<<std::endl;
 //	std::cout<<"---"<<chiangs<<"----"<<std::endl;
 
-    if (chiangs < 5) {
+    if (chiangs < 1) {
         return true;
     }
     return false;
