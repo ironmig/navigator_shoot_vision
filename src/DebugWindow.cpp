@@ -16,6 +16,7 @@ void DebugWindow::init() {
     namedWindow("red", CV_WINDOW_AUTOSIZE);
     namedWindow("blue", CV_WINDOW_AUTOSIZE);
     namedWindow("green", CV_WINDOW_AUTOSIZE);
+    namedWindow("Result",CV_WINDOW_AUTOSIZE);
     std::cout << "Running GUI Debug mode" << std::endl;
 }
 
@@ -36,11 +37,12 @@ void DebugWindow::UpdateGreen(Mat frame) {
     imshow("green", green_frame);
 }
 void DebugWindow::UpdateResults(navigator_shoot_vision::Symbols symbols) {
+  Mat res = color_frame;
     for (int i = 0; i < symbols.list.size(); i++) {
         cv::Rect p = cv::Rect(symbols.list[i].CenterX-50, symbols.list[i].CenterY-50, 100, 100);
-        cv::rectangle(color_frame, p.tl(), p.br(), cv::Scalar(100, 100, 100), 2);
+        cv::rectangle(res, p.tl(), p.br(), cv::Scalar(100, 100, 100), 2);
     }
-    imshow("color", color_frame);
+    imshow("Result",res);
     // results = rs;
     // for (std::vector<ShapeFind::Result>::iterator it = results.begin();it != results.end(); it++)
     //{

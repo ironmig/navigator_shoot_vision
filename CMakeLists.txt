@@ -5,6 +5,9 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
   message_generation 
+  sensor_msgs
+  cv_bridge
+  image_transport
 )
 add_message_files(
   FILES

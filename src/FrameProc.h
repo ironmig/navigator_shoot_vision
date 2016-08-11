@@ -30,7 +30,6 @@ class FrameProc
 		ColorThresh red2;
 		ColorThresh blue;
 		ColorThresh green;
-		VideoCapture cap;
 
 		Mat rgb_frame;
 		Mat hsv_frame;
@@ -38,14 +37,12 @@ class FrameProc
 		Mat binary_red_frame;
 		Mat binary_green_frame;
 
-		void GetFrame();
 		void ErodeDilate();
 		void ConvertHSV();
 		void ThresholdColors();
 	public:
 		FrameProc();
 		void Prepare(Mat frame);
-		void Prepare();
 		Mat GetRed();
 		Mat GetBlue();
 		Mat GetGreen();

@@ -66,7 +66,7 @@ void ShapeFind::GetSymbols(Mat frame, navigator_shoot_vision::Symbols *symbols) 
             hold.Color = parseColor;
             hold.Shape = navigator_shoot_vision::Symbol::CROSS;
             symbols->list.push_back(hold);
-        } 
+        }
 //        else if (ShapeDetector::boundingAreaCross(shapes[i])) {
 //            navigator_shoot_vision::Symbol hold;
 //            Point center = findCenter(shapes[i]);
