@@ -40,7 +40,7 @@ void DebugWindow::UpdateResults(navigator_shoot_vision::Symbols symbols) {
   Mat res = color_frame;
     for (int i = 0; i < symbols.list.size(); i++) {
         cv::Rect p = cv::Rect(symbols.list[i].CenterX-50, symbols.list[i].CenterY-50, 100, 100);
-        cv::rectangle(res, p.tl(), p.br(), cv::Scalar(100, 100, 100), 2);
+        cv::rectangle(res, p.tl(), p.br(), cv::Scalar(0, 0, 100), 2);
     }
     imshow("Result",res);
     // results = rs;

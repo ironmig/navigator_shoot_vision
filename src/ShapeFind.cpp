@@ -41,24 +41,9 @@ void ShapeFind::GetSymbols(Mat frame, navigator_shoot_vision::Symbols *symbols) 
     FindContours();
     FindShapes();
     
-//   	std::vector<Vec3f> circles;
-
-//HoughCircles(binary_frame, circles, CV_HOUGH_GRADIENT,
-//          1,   // accumulator resolution (size of the image / 2)
-//          binary_frame.rows/4,  // minimum distance between two circles
-//          100, // Canny high threshold
-//          10, // minimum number of votes
-//          40, 0); // min and max radius
-
-//   	 for (int i =0; i < circles.size(); i++) {
-//   	 	if(ShapeDetector::boundingAreaCircle(circles[i][2])) {
-
-//            }
-//   	 } THOUGHT OF BETTER IDEA!!!!
-
 	
     for (int i = 0; i < shapes.size(); i++) {
-        if (shapes[i].size() == 12 && ShapeDetector::angleTestCross(shapes[i])) {
+        if (shapes[i].size() == 12 && ShapeDetector::angleTestCross(shapes[i]) && ShapeDetector::boundingAreaCross(shapes[i])) {
             navigator_shoot_vision::Symbol hold;
             Point center = findCenter(shapes[i]);
             hold.CenterX = center.x;
@@ -67,15 +52,6 @@ void ShapeFind::GetSymbols(Mat frame, navigator_shoot_vision::Symbols *symbols) 
             hold.Shape = navigator_shoot_vision::Symbol::CROSS;
             symbols->list.push_back(hold);
         }
-//        else if (ShapeDetector::boundingAreaCross(shapes[i])) {
-//            navigator_shoot_vision::Symbol hold;
-//            Point center = findCenter(shapes[i]);
-//            hold.CenterX = center.x;
-//            hold.CenterY = center.y;
-//            hold.Color = parseColor;
-//            hold.Shape = navigator_shoot_vision::Symbol::CROSS;
-//            symbols->list.push_back(hold);
-//        } 
         else if (shapes[i].size() == 3 && ShapeDetector::angleTestTriangle(shapes[i]) && ShapeDetector::boundingAreaTriangle(shapes[i])) {
             navigator_shoot_vision::Symbol hold;
             Point center = findCenter(shapes[i]);
@@ -85,16 +61,7 @@ void ShapeFind::GetSymbols(Mat frame, navigator_shoot_vision::Symbols *symbols) 
             hold.Shape = navigator_shoot_vision::Symbol::TRIANGLE;
             symbols->list.push_back(hold);
         } 
-//        else if (ShapeDetector::boundingAreaTriangle(shapes[i])) {
-//            navigator_shoot_vision::Symbol hold;
-//            Point center = findCenter(shapes[i]);
-//            hold.CenterX = center.x;
-//            hold.CenterY = center.y;
-//            hold.Color = parseColor;
-//            hold.Shape = navigator_shoot_vision::Symbol::TRIANGLE;
-//            symbols->list.push_back(hold);
-//        }
-	else if (shapes[i].size() > 5 && ShapeDetector::testRatioCircle(shapes[i]) && ShapeDetector::boundingAreaCircle(shapes[i])) {
+		else if (shapes[i].size() > 5 && ShapeDetector::testRatioCircle(shapes[i]) && ShapeDetector::boundingAreaCircle(shapes[i])) {
 		   	navigator_shoot_vision::Symbol hold;
              Point center = findCenter(shapes[i]);
             hold.CenterX = center.x;
@@ -102,6 +69,6 @@ void ShapeFind::GetSymbols(Mat frame, navigator_shoot_vision::Symbols *symbols) 
             hold.Color = parseColor;
             hold.Shape = navigator_shoot_vision::Symbol::CIRCLE;
             symbols->list.push_back(hold);
-	}
+		}
     }
 }
