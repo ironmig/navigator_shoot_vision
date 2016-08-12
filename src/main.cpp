@@ -27,28 +27,31 @@ class ShooterVision
 		ShapeFind redFinder;
 		ShapeFind greenFinder;
 		
-  ros::NodeHandle nh_;
-  image_transport::ImageTransport it_;
-  image_transport::Subscriber image_sub_;
-  image_transport::Publisher image_pub_;
+		ros::NodeHandle nh;
+		image_transport::ImageTransport image_transport;
+		image_transport::Subscriber image_sub;
+		cv_bridge::CvImagePtr cv_ptr;
+		ros::Publisher<navigator_shoot_vision::Symbols> pub;
 	public:
 		
-	ShooterVision() : 
-    it_(nh_),
+	ShooterVision() :
+		nh(),
+    image_transport(nh),
 		fp(),
 		blueFinder(navigator_shoot_vision::Symbol::BLUE),
 		redFinder(navigator_shoot_vision::Symbol::RED),
-		greenFinder(navigator_shoot_vision::Symbol::GREEN)
+		greenFinder(navigator_shoot_vision::Symbol::GREEN),
+		pub("/shooter_vision",5)
 	{
 		DebugWindow::init();
-    image_sub_ = it_.subscribe("/camera/image_color", 1, &ShooterVision::run, this);
-		symbols = navigator_shoot_vision::Symbols();
+    image_sub = image_transport.subscribe("/camera/image_color", 1, &ShooterVision::run, this);
+    nh.advertise(pub);
 	}
 
+	//Callback for subscriber to camera feed
 	void run(const sensor_msgs::ImageConstPtr& msg)
 	{
-		//Grab ros frame
-    cv_bridge::CvImagePtr cv_ptr;
+		//Convert ros image to opencv Mat
     try
     {
       cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8);
@@ -57,10 +60,10 @@ class ShooterVision
     {
       ROS_ERROR("cv_bridge exception: %s", e.what());
       return;
-    }
-    std::cout << "Loop. Rows=" << cv_ptr->image.rows << std::endl;
-		//Convert Ros frame to opencv
-     cv::waitKey(3);
+		}
+
+		cv::waitKey(3); //Small wait to slow down
+
 		//Process frame
 		fp.Prepare(cv_ptr->image);
 		symbols.list.clear();
@@ -69,7 +72,9 @@ class ShooterVision
 		blueFinder.GetSymbols(fp.GetBlue(),&symbols);
 		redFinder.GetSymbols(fp.GetRed(),&symbols);
 		greenFinder.GetSymbols(fp.GetGreen(),&symbols);
+		
 		//Publish to ros
+		pub.publish(symbols);
 		DebugWindow::UpdateResults(symbols);
 	}
 };
