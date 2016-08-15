@@ -40,10 +40,11 @@ void ShapeFind::GetSymbols(Mat frame, navigator_shoot_vision::Symbols *symbols) 
     }
     FindContours();
     FindShapes();
-    
+
 	
     for (int i = 0; i < shapes.size(); i++) {
-        if (shapes[i].size() == 12 && ShapeDetector::angleTestCross(shapes[i]) && ShapeDetector::boundingAreaCross(shapes[i])) {
+//std::cout<<contourArea(shapes[i])<<std::endl;
+        if (shapes[i].size() == 12 && contourArea(shapes[i]) > 500 && ShapeDetector::angleTestCross(shapes[i]) && ShapeDetector::boundingAreaCross(shapes[i])) {
             navigator_shoot_vision::Symbol hold;
             Point center = findCenter(shapes[i]);
             hold.CenterX = center.x;
@@ -52,7 +53,7 @@ void ShapeFind::GetSymbols(Mat frame, navigator_shoot_vision::Symbols *symbols) 
             hold.Shape = navigator_shoot_vision::Symbol::CROSS;
             symbols->list.push_back(hold);
         }
-        else if (shapes[i].size() == 3 && ShapeDetector::angleTestTriangle(shapes[i]) && ShapeDetector::boundingAreaTriangle(shapes[i])) {
+        else if (shapes[i].size() == 3 && contourArea(shapes[i]) > 500 && ShapeDetector::angleTestTriangle(shapes[i]) && ShapeDetector::boundingAreaTriangle(shapes[i])) {
             navigator_shoot_vision::Symbol hold;
             Point center = findCenter(shapes[i]);
             hold.CenterX = center.x;
@@ -61,7 +62,7 @@ void ShapeFind::GetSymbols(Mat frame, navigator_shoot_vision::Symbols *symbols) 
             hold.Shape = navigator_shoot_vision::Symbol::TRIANGLE;
             symbols->list.push_back(hold);
         } 
-		else if (shapes[i].size() > 5 && ShapeDetector::testRatioCircle(shapes[i]) && ShapeDetector::boundingAreaCircle(shapes[i])) {
+		else if (shapes[i].size() > 5 && contourArea(shapes[i]) > 500 && ShapeDetector::testRatioCircle(shapes[i]) && ShapeDetector::boundingAreaCircle(shapes[i])) {
 		   	navigator_shoot_vision::Symbol hold;
              Point center = findCenter(shapes[i]);
             hold.CenterX = center.x;

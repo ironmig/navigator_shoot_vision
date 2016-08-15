@@ -39,8 +39,17 @@ void DebugWindow::UpdateGreen(Mat frame) {
 void DebugWindow::UpdateResults(navigator_shoot_vision::Symbols symbols) {
   Mat res = color_frame;
     for (int i = 0; i < symbols.list.size(); i++) {
-        cv::Rect p = cv::Rect(symbols.list[i].CenterX-50, symbols.list[i].CenterY-50, 100, 100);
-        cv::rectangle(res, p.tl(), p.br(), cv::Scalar(0, 0, 100), 2);
+        cv::Rect p = cv::Rect(symbols.list[i].CenterX-50, symbols.list[i].CenterY-50, 100, 50);
+        cv::rectangle(res, p, cv::Scalar(200, 200, 200), -1);
+        Scalar color;
+        if(symbols.list[i].Color == 'r') color = Scalar(0,0,100);
+        else if(symbols.list[i].Color == 'g') color = Scalar(0,100,0);
+       	else if(symbols.list[i].Color == 'b') color = Scalar(100,0,0);
+       	
+       	
+       	if(symbols.list[i].Shape == 't') putText(res, "TRI", Point(symbols.list[i].CenterX-25, symbols.list[i].CenterY-25), 4, 1, color,  3);
+       	if(symbols.list[i].Shape == 'c') putText(res, "CIR", Point(symbols.list[i].CenterX-25, symbols.list[i].CenterY-25), 4, 1, color,  3);
+       	if(symbols.list[i].Shape == 'p') putText(res, "CROSS", Point(symbols.list[i].CenterX-50, symbols.list[i].CenterY-25), 4, 1, color,3);
     }
     imshow("Result",res);
     // results = rs;
