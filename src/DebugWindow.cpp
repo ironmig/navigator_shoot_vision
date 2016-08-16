@@ -5,6 +5,7 @@ Mat DebugWindow::red_frame = Mat();
 Mat DebugWindow::green_frame = Mat();
 Mat DebugWindow::blue_frame = Mat();
 navigator_shoot_vision::Symbols DebugWindow::symbols = navigator_shoot_vision::Symbols();
+std::vector<navigator_shoot_vision::Symbols> DebugWindow::allFoundSymbols = std::vector<navigator_shoot_vision::Symbols>();
 
 void DebugWindow::init() {
     color_frame = Mat();
@@ -39,6 +40,7 @@ void DebugWindow::UpdateGreen(Mat frame) {
 void DebugWindow::UpdateResults(navigator_shoot_vision::Symbols symbols) {
   Mat res = color_frame;
     for (int i = 0; i < symbols.list.size(); i++) {
+    	allFoundSymbols.push_back(symbols);
         cv::Rect p = cv::Rect(symbols.list[i].CenterX-50, symbols.list[i].CenterY-50, 100, 50);
         cv::rectangle(res, p, cv::Scalar(200, 200, 200), -1);
         Scalar color;
@@ -52,6 +54,8 @@ void DebugWindow::UpdateResults(navigator_shoot_vision::Symbols symbols) {
        	if(symbols.list[i].Shape == 'p') putText(res, "CROSS", Point(symbols.list[i].CenterX-50, symbols.list[i].CenterY-25), 4, 1, color,3);
     }
     imshow("Result",res);
+    
+
     // results = rs;
     // for (std::vector<ShapeFind::Result>::iterator it = results.begin();it != results.end(); it++)
     //{

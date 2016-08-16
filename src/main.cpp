@@ -58,7 +58,7 @@ class ShooterVision
       ROS_ERROR("cv_bridge exception: %s", e.what());
       return;
     }
-    std::cout << "Loop. Rows=" << cv_ptr->image.rows << std::endl;
+//    std::cout << "Loop. Rows=" << cv_ptr->image.rows << std::endl;
 		//Convert Ros frame to opencv
      cv::waitKey(3);
 		//Process frame
@@ -84,4 +84,41 @@ int main(int argc,char ** argv)
 		//sv.run();
 	}
 	std::cout << "Key detected, exiting" << std::endl;
+	
+	//Some test code
+//	for(int i =0; i < DebugWindow::allFoundSymbols.size(); i++) {
+//		for(int a = 0; a < DebugWindow::allFoundSymbols[i].list.size(); a++) {
+//			for(int j =0; j < DebugWindow::allFoundSymbols.size(); j++) {
+//				for(int b = 0; b < DebugWindow::allFoundSymbols[j].list.size(); b++) {
+//					if(DebugWindow::allFoundSymbols[i].list[a].Color == DebugWindow::allFoundSymbols[j].list[b].Color) {
+//						if(DebugWindow::allFoundSymbols[i].list[a].Shape == DebugWindow::allFoundSymbols[j].list[b].Shape) {
+//							int vx = DebugWindow::allFoundSymbols[i].list[a].CenterX - DebugWindow::allFoundSymbols[j].list[b].CenterX;
+//							int vy = DebugWindow::allFoundSymbols[i].list[a].CenterY - DebugWindow::allFoundSymbols[j].list[b].CenterY;
+//							if(vx*vx + vy*vy < 10000) std::cout<< DebugWindow::allFoundSymbols[i].list[a].Shape<<std::endl;
+//						}
+//					}
+//				}
+//			}
+//		}
+//	}
+
+//int sumx = 0;
+//int sumy = 0;	
+
+//	for(int i =0; i < DebugWindow::allFoundSymbols.size(); i++) {
+//		int tsumx = 0, tsumy = 0;
+//		for(int j = 0; j < DebugWindow::allFoundSymbols[i].list.size(); j++) {
+//				tsumx += DebugWindow::allFoundSymbols[i].list[j].CenterX;
+//				tsumy += DebugWindow::allFoundSymbols[i].list[j].CenterY;
+//		}
+//		tsumx /=DebugWindow::allFoundSymbols[i].list.size();
+//		tsumy /= DebugWindow::allFoundSymbols[i].list.size();
+//		
+//		sumx += tsumx;
+//		sumy += tsumy;
+//	}
+//	sumx /= DebugWindow::allFoundSymbols.size();
+//	sumy /= DebugWindow::allFoundSymbols.size();
+//	std::cout<<sumx<<" "<<sumy<<std::endl;
+
 }

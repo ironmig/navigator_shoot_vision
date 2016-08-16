@@ -41,8 +41,7 @@ float ShapeDetector::findVarience(std::vector<float> observed) {
 bool ShapeDetector::boundingAreaCross(std::vector<cv::Point> &points) {
     cv::Rect boundingRect = cv::boundingRect(points);
     float area = contourArea(points) / (boundingRect.width * boundingRect.height);
-//    std::cout << area << std::endl;
-    if (area >= .50 && area <= .57)
+    if (area >= .43 && area <= .57)
         return true;
     return false;
 }

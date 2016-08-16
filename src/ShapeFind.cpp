@@ -70,6 +70,7 @@ void ShapeFind::GetSymbols(Mat frame, navigator_shoot_vision::Symbols *symbols) 
             hold.Color = parseColor;
             hold.Shape = navigator_shoot_vision::Symbol::CIRCLE;
             symbols->list.push_back(hold);
+//                        std::cout<<"Center: " <<center.x<<" "<<center.y<<std::endl;
 		}
     }
 }
