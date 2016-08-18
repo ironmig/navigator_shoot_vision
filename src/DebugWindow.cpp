@@ -38,6 +38,7 @@ void DebugWindow::UpdateGreen(Mat frame) {
     imshow("green", green_frame);
 }
 void DebugWindow::UpdateResults(navigator_shoot_vision::Symbols symbols) {
+	
   Mat res = color_frame;
     for (int i = 0; i < symbols.list.size(); i++) {
     	allFoundSymbols.push_back(symbols);
@@ -55,7 +56,7 @@ void DebugWindow::UpdateResults(navigator_shoot_vision::Symbols symbols) {
     }
     imshow("Result",res);
     
-
+	
     // results = rs;
     // for (std::vector<ShapeFind::Result>::iterator it = results.begin();it != results.end(); it++)
     //{

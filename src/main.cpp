@@ -31,6 +31,7 @@ class ShooterVision
   image_transport::ImageTransport it_;
   image_transport::Subscriber image_sub_;
   image_transport::Publisher image_pub_;
+  ros::Publisher chatter_pub;
 	public:
 		
 	ShooterVision() : 
@@ -41,6 +42,7 @@ class ShooterVision
 		greenFinder(navigator_shoot_vision::Symbol::GREEN)
 	{
 		DebugWindow::init();
+		chatter_pub = nh_.advertise<navigator_shoot_vision::Symbols>("found_shapes", 1000);
     image_sub_ = it_.subscribe("/camera/image_color", 1, &ShooterVision::run, this);
 		symbols = navigator_shoot_vision::Symbols();
 	}
@@ -71,6 +73,7 @@ class ShooterVision
 		greenFinder.GetSymbols(fp.GetGreen(),&symbols);
 		//Publish to ros
 		DebugWindow::UpdateResults(symbols);
+		chatter_pub.publish(symbols);
 	}
 };
 

@@ -3,9 +3,9 @@
   <name>navigator_shoot_vision</name>
   <version>0.0.0</version>
   <description>The navigator_shooter package</description>
-  <maintainer email="kma1660@gmail.com">Kevin Allen</maintainer>
+   <maintainer email="dvolya@gmail.com">Kevin + Daniel V</maintainer>
   <license>TODO</license>
-  <author email="kma1660@gmail.com">Kevin Allen</author> 
+<author email="dvolya@gmail.com">Kevin + Daniel V</author> 
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>std_msgs</build_depend>
   <build_depend>message_runtime</build_depend>
