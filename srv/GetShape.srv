@@ -10,3 +10,5 @@ string Color
 ---
 uint32 CenterX
 uint32 CenterY
+navigator_shoot_vision/Symbol shape
+bool success

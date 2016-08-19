@@ -51,6 +51,14 @@ void ShapeFind::GetSymbols(Mat frame, navigator_shoot_vision::Symbols *symbols) 
             hold.CenterY = center.y;
             hold.Color = parseColor;
             hold.Shape = navigator_shoot_vision::Symbol::CROSS;
+            for (int j = 0; i < shapes[i].size(); j++)
+            {
+              geometry_msgs::Point p;
+              p.x = shapes[i][j].x;
+              p.y = shapes[i][j].y;
+              p.z = 0;
+              hold.points.push_back(p);
+            }
             symbols->list.push_back(hold);
         }
         else if (shapes[i].size() == 3 && contourArea(shapes[i]) > 500 && ShapeDetector::angleTestTriangle(shapes[i]) && ShapeDetector::boundingAreaTriangle(shapes[i])) {
@@ -60,6 +68,14 @@ void ShapeFind::GetSymbols(Mat frame, navigator_shoot_vision::Symbols *symbols) 
             hold.CenterY = center.y;
             hold.Color = parseColor;
             hold.Shape = navigator_shoot_vision::Symbol::TRIANGLE;
+            for (int j = 0; i < shapes[i].size(); j++)
+            {
+              geometry_msgs::Point p;
+              p.x = shapes[i][j].x;
+              p.y = shapes[i][j].y;
+              p.z = 0;
+              hold.points.push_back(p);
+            }
             symbols->list.push_back(hold);
         } 
 		else if (shapes[i].size() > 5 && contourArea(shapes[i]) > 500 && ShapeDetector::testRatioCircle(shapes[i]) && ShapeDetector::boundingAreaCircle(shapes[i])) {
@@ -69,6 +85,14 @@ void ShapeFind::GetSymbols(Mat frame, navigator_shoot_vision::Symbols *symbols) 
             hold.CenterY = center.y;
             hold.Color = parseColor;
             hold.Shape = navigator_shoot_vision::Symbol::CIRCLE;
+            for (int j = 0; i < shapes[i].size(); j++)
+            {
+              geometry_msgs::Point p;
+              p.x = shapes[i][j].x;
+              p.y = shapes[i][j].y;
+              p.z = 0;
+              hold.points.push_back(p);
+            }
             symbols->list.push_back(hold);
 //                        std::cout<<"Center: " <<center.x<<" "<<center.y<<std::endl;
 		}

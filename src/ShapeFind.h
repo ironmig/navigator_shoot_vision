@@ -8,7 +8,7 @@
 #include "opencv2/opencv.hpp"
 
 #include "navigator_shoot_vision/Symbols.h"
-
+#include "geometry_msgs/Point.h"
 #include "ShapeDetector.h"
 using namespace cv;
 class ShapeFind {
