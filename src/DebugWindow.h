@@ -26,7 +26,7 @@ class DebugWindow
 		static navigator_shoot_vision::Symbols symbols;
 
 	public:
-				static std::vector<navigator_shoot_vision::Symbols> allFoundSymbols;
+    static std::vector<navigator_shoot_vision::Symbols> allFoundSymbols;
 		static void init();
 		static void UpdateColor(Mat frame);
 		static void UpdateRed(Mat frame);

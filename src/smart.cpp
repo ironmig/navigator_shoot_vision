@@ -26,8 +26,8 @@ class ImageSearcher {
     navigator_shoot_vision::Symbols syms; //latest frame
     std::vector<navigator_shoot_vision::Symbols> frameSymbolHolder; //Previous frames
     std::vector<navigator_shoot_vision::Symbol> possibleSymbols; 
-    int possibleShapes[3] = {112, 116, 99};
-    int possibleColors[3] = {114, 98, 103};
+    std::string possibleShapes[3] = {navigator_shoot_vision::Symbol::CROSS, navigator_shoot_vision::Symbol::TRIANGLE, navigator_shoot_vision::Symbol::CIRCLE};
+    std::string possibleColors[3] = {navigator_shoot_vision::Symbol::RED, navigator_shoot_vision::Symbol::BLUE, navigator_shoot_vision::Symbol::GREEN};
     int counter[3 * 3];
     int frames;
 
@@ -110,8 +110,6 @@ class ImageSearcher {
         std::cout << "not found" << std::endl;
         return false;
     }
-
-    //   			 }
 };
 
 int main(int argc, char **argv) {

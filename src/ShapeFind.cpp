@@ -1,6 +1,6 @@
 #include "ShapeFind.h"
 
-ShapeFind::ShapeFind(char color) {
+ShapeFind::ShapeFind(string color) {
     parseColor = color;
     binary_frame = Mat();
     contoursfindMat = std::vector<std::vector<Point> >();

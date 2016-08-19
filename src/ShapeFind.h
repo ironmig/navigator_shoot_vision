@@ -13,10 +13,10 @@
 using namespace cv;
 class ShapeFind {
   public:
-    ShapeFind(char color);
+    ShapeFind(string color);
     void GetSymbols(Mat frame, navigator_shoot_vision::Symbols* symbols);
   private:
-    char parseColor;
+    string parseColor;
     Mat binary_frame;
     std::vector< std::vector<Point> > contoursfindMat;
     std::vector<Vec4i> hierarchyfindMat;
