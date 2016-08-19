@@ -1,12 +1,14 @@
-char Shape
-char CROSS=112 #p
-char TRIANGLE = 116 #t
-char CIRCLE = 99 #c
+string Shape
+string CROSS="CROSS" #p
+string TRIANGLE="TRIANGLE" #t
+string CIRCLE ="CIRCLE" #c
 
-char Color
-char RED = 114 #r
-char BLUE = 98 #b
-char GREEN = 103 #g
+string Color
+string RED="RED" #r
+string BLUE="BLUE" #b
+string GREEN="GREEN" #g
 
 uint32 CenterX
 uint32 CenterY
+
+geometry_msgs/Point[] points
