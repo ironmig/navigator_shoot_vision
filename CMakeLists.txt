@@ -20,6 +20,7 @@ add_message_files(
 add_service_files(
 	FILES
 	GetShape.srv
+	GetShapeController.srv
 )
 
 generate_messages(
@@ -42,6 +43,7 @@ add_dependencies(smart_shape_finder_server navigator_shoot_vision_gencpp)
 
 
 add_executable(vision src/main.cpp src/FrameProc.cpp src/ShapeFind.cpp src/DebugWindow.cpp src/ShapeDetector.cpp)
+add_dependencies(vision navigator_shoot_vision_gencpp)
 target_link_libraries(vision ${catkin_LIBRARIES})
 find_package( OpenCV REQUIRED )
 target_link_libraries(vision ${OpenCV_LIBS} )
