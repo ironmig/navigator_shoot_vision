@@ -7,6 +7,8 @@
 #include <ros/ros.h>
 #include <sensor_msgs/image_encodings.h>
 
+#include <vector>
+
 #include "DebugWindow.h"
 #include "opencv2/core/core.hpp"
 #include "opencv2/highgui/highgui.hpp"
@@ -16,25 +18,29 @@
 #include "navigator_shoot_vision/GetShape.h"
 #include "navigator_shoot_vision/Symbols.h"
 
-navigator_shoot_vision::Symbols syms;
+
+
 class ImageSearcher {
   private:
     ros::NodeHandle n;
     ros::Subscriber sub;
     ros::ServiceServer service;
+	navigator_shoot_vision::Symbols syms;
 
   public:
+  	std::vector<navigator_shoot_vision::Symbols> frameSymbolHolder;
     ImageSearcher() {
         syms = navigator_shoot_vision::Symbols();
-        sub = n.subscribe("found_shapes", 1000, chatterCallback);
-        service = n.advertiseService("GetShape", test);
+        sub = n.subscribe("found_shapes", 1000, &ImageSearcher::chatterCallback, this);
+        service = n.advertiseService("GetShape", &ImageSearcher::test, this);
     }
-    static void chatterCallback(const navigator_shoot_vision::Symbols &symbols) {
+   void chatterCallback(const navigator_shoot_vision::Symbols &symbols) {
         syms = symbols;
+        frameSymbolHolder.push_back(symbols);
         // std::cout<<symbols.list.size()<<std::endl;
     }
 
-    static bool test(navigator_shoot_vision::GetShape::Request &req, navigator_shoot_vision::GetShape::Response &res) {
+   bool test(navigator_shoot_vision::GetShape::Request &req, navigator_shoot_vision::GetShape::Response &res) {
         //        for(int i = 0; i < syms.size(); i++) {
         for (int j = 0; j < syms.list.size(); j++) {
             if (req.Shape == syms.list[j].Shape && req.Color == syms.list[j].Color) {
