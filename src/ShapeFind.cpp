@@ -45,13 +45,14 @@ void ShapeFind::GetSymbols(Mat frame, navigator_shoot_vision::Symbols *symbols) 
     for (int i = 0; i < shapes.size(); i++) {
 //std::cout<<contourArea(shapes[i])<<std::endl;
         if (shapes[i].size() == 12 && contourArea(shapes[i]) > 500 && ShapeDetector::angleTestCross(shapes[i]) && ShapeDetector::boundingAreaCross(shapes[i])) {
+
             navigator_shoot_vision::Symbol hold;
             Point center = findCenter(shapes[i]);
             hold.CenterX = center.x;
             hold.CenterY = center.y;
             hold.Color = parseColor;
             hold.Shape = navigator_shoot_vision::Symbol::CROSS;
-            for (int j = 0; i < shapes[i].size(); j++)
+            for (int j = 0; j < shapes[i].size(); j++)
             {
               geometry_msgs::Point p;
               p.x = shapes[i][j].x;
@@ -68,7 +69,7 @@ void ShapeFind::GetSymbols(Mat frame, navigator_shoot_vision::Symbols *symbols) 
             hold.CenterY = center.y;
             hold.Color = parseColor;
             hold.Shape = navigator_shoot_vision::Symbol::TRIANGLE;
-            for (int j = 0; i < shapes[i].size(); j++)
+            for (int j = 0; j < shapes[i].size(); j++)
             {
               geometry_msgs::Point p;
               p.x = shapes[i][j].x;
@@ -85,7 +86,7 @@ void ShapeFind::GetSymbols(Mat frame, navigator_shoot_vision::Symbols *symbols) 
             hold.CenterY = center.y;
             hold.Color = parseColor;
             hold.Shape = navigator_shoot_vision::Symbol::CIRCLE;
-            for (int j = 0; i < shapes[i].size(); j++)
+            for (int j = 0; j < shapes[i].size(); j++)
             {
               geometry_msgs::Point p;
               p.x = shapes[i][j].x;
