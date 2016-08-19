@@ -16,6 +16,8 @@
 #include "navigator_shoot_vision/GetShapeController.h"
 #include "navigator_shoot_vision/Symbols.h"
 
+#include "std_srvs/SetBool.h"
+
 using namespace cv;
 
 class ShooterVision {
@@ -42,7 +44,7 @@ class ShooterVision {
           greenFinder(navigator_shoot_vision::Symbol::GREEN) {
         active = false;
 
-        serviceCommand = nh_.advertiseService("GetShapeController", &ShooterVision::getShapeController, this);
+        serviceCommand = nh_.advertiseService("/shooter_vision/runvision", &ShooterVision::getShapeController, this);
 
         	std::cout<<"hey!"<<std::endl;
             DebugWindow::init();
@@ -53,9 +55,8 @@ class ShooterVision {
         
     }
 
-    bool getShapeController(navigator_shoot_vision::GetShapeController::Request &req, navigator_shoot_vision::GetShapeController::Response &res) {
-        active = req.Active;
-        res.Meh = active;
+    bool getShapeController(std_srvs::SetBool::Request &req, std_srvs::SetBool::Response &res) {
+        active = req.data;
         std::cout<<"Setting active to "<<active<<std::endl;
         return true;
     }
@@ -81,9 +82,9 @@ class ShooterVision {
         redFinder.GetSymbols(fp.GetRed(), &symbols);
         greenFinder.GetSymbols(fp.GetGreen(), &symbols);
         // Publish to ros
-        for(int i =0 ; i < symbols.list.size(); i++) {
-        	std::cout<<symbols.list[i]<<std::endl;
-        }
+        //for(int i =0 ; i < symbols.list.size(); i++) {
+        //	std::cout<<symbols.list[i]<<std::endl;
+        //}
         DebugWindow::UpdateResults(symbols);
         chatter_pub.publish(symbols);
         }

@@ -17,6 +17,7 @@
 
 #include "navigator_shoot_vision/GetShape.h"
 #include "navigator_shoot_vision/Symbols.h"
+#include "std_srvs/SetBool.h"
 
 class ImageSearcher {
   private:
@@ -28,9 +29,10 @@ class ImageSearcher {
     std::vector<navigator_shoot_vision::Symbol> possibleSymbols; 
     std::string possibleShapes[3] = {navigator_shoot_vision::Symbol::CROSS, navigator_shoot_vision::Symbol::TRIANGLE, navigator_shoot_vision::Symbol::CIRCLE};
     std::string possibleColors[3] = {navigator_shoot_vision::Symbol::RED, navigator_shoot_vision::Symbol::BLUE, navigator_shoot_vision::Symbol::GREEN};
+    ros::ServiceServer serviceCommand;
     int counter[3 * 3];
     int frames;
-
+    bool active;
 	int lastCallFrame;
   public:
     ImageSearcher() {
@@ -47,15 +49,19 @@ class ImageSearcher {
                 counter[i * j] = 0;
             }
         }
+
         std::cout << "Set" << std::endl;
         syms = navigator_shoot_vision::Symbols();
         sub = n.subscribe("found_shapes", 1000, &ImageSearcher::chatterCallback, this);
+        serviceCommand = n.advertiseService("/shooter_vision/runsmart", &ImageSearcher::getShapeController, this);
         service = n.advertiseService("GetShape", &ImageSearcher::getShape, this);
+        active = false;
     }
 
     float mean(int val, int size) { return val / size; }
     void shapeChecker(const navigator_shoot_vision::Symbols &symbols) {
-
+        if (!active) return;
+        
         for (int i = 0; i < symbols.list.size(); i++) {
             for (int k = 0; k < possibleSymbols.size(); k++) {
 
@@ -85,6 +91,7 @@ class ImageSearcher {
     }
 
     bool getShape(navigator_shoot_vision::GetShape::Request &req, navigator_shoot_vision::GetShape::Response &res) {
+      if (!active) return false;
     	if(frames == 0) {
 
     	}
@@ -109,6 +116,14 @@ class ImageSearcher {
         }
         std::cout << "not found" << std::endl;
         return false;
+    }
+    bool getShapeController(std_srvs::SetBool::Request &req, std_srvs::SetBool::Response &res) {
+      std_srvs::SetBool msg;
+      msg.request.data = req.data;
+        ros::service::call("/shooter_vision/runvision", msg);
+        
+        std::cout<<"Setting active to "<<active<<std::endl;
+        return true;
     }
 };
 

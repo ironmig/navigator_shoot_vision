@@ -116,7 +116,7 @@ bool ShapeDetector::angleTestTriangle(std::vector<cv::Point> &points) { //Assumi
 	float v2 = (180 - angles[inds1] - angles[inds2]);
 	
 	float chiangs = 0;
-    chiangs += (angles[inds1] - v) * (angles[inds1] - v) / v;
+  chiangs += (angles[inds1] - v) * (angles[inds1] - v) / v;
 	chiangs += (angles[inds2] - v) * (angles[inds2] - v) / v;
 	chiangs += (angles[ind] - v2) * (angles[ind] - v2) /v2;
 	

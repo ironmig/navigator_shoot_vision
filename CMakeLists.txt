@@ -7,6 +7,7 @@ project(navigator_shoot_vision)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
+  std_srvs
   message_generation 
   sensor_msgs
   cv_bridge
@@ -33,6 +34,7 @@ generate_messages(
 catkin_package(
   CATKIN_DEPENDS 
 	std_msgs 
+    std_srvs
     message_runtime
 )
 
