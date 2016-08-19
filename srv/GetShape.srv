@@ -8,7 +8,5 @@ string Color
 #char BLUE = 98 #b
 #char GREEN = 103 #g
 ---
-uint32 CenterX
-uint32 CenterY
-navigator_shoot_vision/Symbol shape
+navigator_shoot_vision/Symbol symbol
 bool success

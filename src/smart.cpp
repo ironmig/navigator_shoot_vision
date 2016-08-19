@@ -97,10 +97,10 @@ class ImageSearcher {
 
                 if (req.Shape == possibleSymbols[i].Shape && req.Color == possibleSymbols[i].Color && syms.list[j].Shape == req.Shape &&
                     syms.list[j].Color == req.Color && counter[i] > 10) {
+                      
                     if (std::abs(syms.list[j].CenterX - mean(possibleSymbols[i].CenterX, counter[i])) < 100 &&
                         std::abs(syms.list[j].CenterY - mean(possibleSymbols[i].CenterY, counter[i])) < 100) {
-                        res.CenterX = syms.list[j].CenterX;
-                        res.CenterY = syms.list[j].CenterY;
+                        res.symbol = syms.list[j];
                         lastCallFrame = frames;
                         return true;
                     }
