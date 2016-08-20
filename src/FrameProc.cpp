@@ -50,7 +50,7 @@ void FrameProc::ThresholdColors()
 }
 void FrameProc::Prepare(Mat frame)
 {
-	rgb_frame = frame;
+  rgb_frame = frame;
 	DebugWindow::UpdateColor(rgb_frame);
 	ErodeDilate();
 	ConvertHSV();

@@ -14,7 +14,7 @@ using namespace cv;
 class FrameProc
 {
 	private:
-		//const int height = 480;
+    //const int height = 480;
 		//const int width = 640;
 		static const int blur_kernel_size;
 		static const int erode_kernel_size;

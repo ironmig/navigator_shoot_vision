@@ -39,40 +39,36 @@ class ShooterVision {
     bool active;
 
   public:
-    ShooterVision()
-        : it_(nh_), fp(), blueFinder(navigator_shoot_vision::Symbol::BLUE), redFinder(navigator_shoot_vision::Symbol::RED),
-          greenFinder(navigator_shoot_vision::Symbol::GREEN) {
-        active = false;
-
-        serviceCommand = nh_.advertiseService("/shooter_vision/runvision", &ShooterVision::getShapeController, this);
-
-        	std::cout<<"hey!"<<std::endl;
-            DebugWindow::init();
-            chatter_pub = nh_.advertise<navigator_shoot_vision::Symbols>("found_shapes", 1000);
-            image_sub_ = it_.subscribe("/camera/image_color", 1, &ShooterVision::run, this);
-
-            symbols = navigator_shoot_vision::Symbols();
-        
+    ShooterVision() :
+      it_(nh_), fp(), 
+      blueFinder(navigator_shoot_vision::Symbol::BLUE), 
+      redFinder(navigator_shoot_vision::Symbol::RED),
+      greenFinder(navigator_shoot_vision::Symbol::GREEN)
+    {
+      active = false;
+      serviceCommand = nh_.advertiseService("/shooter_vision/runvision", &ShooterVision::getShapeController, this);
+      DebugWindow::init();
+      chatter_pub = nh_.advertise<navigator_shoot_vision::Symbols>("found_shapes", 1000);
+      image_sub_ = it_.subscribe("/right_camera/image_color", 1, &ShooterVision::run, this);
     }
 
     bool getShapeController(std_srvs::SetBool::Request &req, std_srvs::SetBool::Response &res) {
-        active = req.data;
-        std::cout<<"Setting active to "<<active<<std::endl;
-        return true;
+      active = req.data;
+      std::cout<<"Setting active to "<<active<<std::endl;
+      return true;
     }
     void run(const sensor_msgs::ImageConstPtr &msg) {
-        // Grab ros frame
-        cv_bridge::CvImagePtr cv_ptr;
-        try {
-            cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8);
-        } catch (cv_bridge::Exception &e) {
-            ROS_ERROR("cv_bridge exception: %s", e.what());
-            return;
-        }
-        //    std::cout << "Loop. Rows=" << cv_ptr->image.rows << std::endl;
-        // Convert Ros frame to opencv
-        cv::waitKey(3);
-        if(active) {
+      // Grab ros frame
+      cv_bridge::CvImagePtr cv_ptr;
+      try {
+        cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8);
+      } catch (cv_bridge::Exception &e) {
+        ROS_ERROR("cv_bridge exception: %s", e.what());
+        return;
+      }
+      // Convert Ros frame to opencv
+      cv::waitKey(3);
+      if(active) {
         // Process frame
         fp.Prepare(cv_ptr->image);
         symbols.list.clear();
@@ -81,23 +77,20 @@ class ShooterVision {
         blueFinder.GetSymbols(fp.GetBlue(), &symbols);
         redFinder.GetSymbols(fp.GetRed(), &symbols);
         greenFinder.GetSymbols(fp.GetGreen(), &symbols);
+
         // Publish to ros
-        //for(int i =0 ; i < symbols.list.size(); i++) {
-        //	std::cout<<symbols.list[i]<<std::endl;
-        //}
         DebugWindow::UpdateResults(symbols);
         chatter_pub.publish(symbols);
-        }
+      }
     }
 };
 
 int main(int argc, char **argv) {
-    ros::init(argc, argv, "image_converter");
-    ShooterVision sv = ShooterVision();
-    while (waitKey(50) == -1 && ros::ok()) {
-        ros::spin();
-        // sv.run();
-    }
-    std::cout << "Key detected, exiting" << std::endl;
-    return 0;
+  ros::init(argc, argv, "image_converter");
+  ShooterVision sv = ShooterVision();
+  while (waitKey(50) == -1 && ros::ok()) {
+    ros::spin();
+  }
+  std::cout << "Key detected, exiting" << std::endl;
+  return 0;
 }

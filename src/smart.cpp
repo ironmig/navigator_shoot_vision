@@ -35,59 +35,60 @@ class ImageSearcher {
     bool active;
 	int lastCallFrame;
   public:
-    ImageSearcher() {
-        frames = 0;
-        lastCallFrame = 0;
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                navigator_shoot_vision::Symbol holdSym;
-                holdSym.Shape = possibleShapes[i];
-                holdSym.Color = possibleColors[j];
-                holdSym.CenterX = 0;
-                holdSym.CenterY = 0;
-                possibleSymbols.push_back(holdSym);
-                counter[i * j] = 0;
-            }
+    ImageSearcher()
+    {
+      frames = 0;
+      lastCallFrame = 0;
+      for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+          navigator_shoot_vision::Symbol holdSym;
+          holdSym.Shape = possibleShapes[i];
+          holdSym.Color = possibleColors[j];
+          holdSym.CenterX = 0;
+          holdSym.CenterY = 0;
+          possibleSymbols.push_back(holdSym);
+          counter[i * j] = 0;
         }
+      }
 
-        std::cout << "Set" << std::endl;
-        syms = navigator_shoot_vision::Symbols();
-        sub = n.subscribe("found_shapes", 1000, &ImageSearcher::chatterCallback, this);
-        serviceCommand = n.advertiseService("/shooter_vision/runsmart", &ImageSearcher::getShapeController, this);
-        service = n.advertiseService("GetShape", &ImageSearcher::getShape, this);
-        active = false;
+      syms = navigator_shoot_vision::Symbols();
+      sub = n.subscribe("found_shapes", 1000, &ImageSearcher::chatterCallback, this);
+      serviceCommand = n.advertiseService("/shooter_vision/runsmart", &ImageSearcher::getShapeController, this);
+      service = n.advertiseService("GetShape", &ImageSearcher::getShape, this);
+      active = false;
     }
 
-    float mean(int val, int size) { return val / size; }
+    float mean(int val, int size)
+    { 
+      return val / size; 
+    }
     void shapeChecker(const navigator_shoot_vision::Symbols &symbols) {
-        if (!active) return;
-        
-        for (int i = 0; i < symbols.list.size(); i++) {
-            for (int k = 0; k < possibleSymbols.size(); k++) {
+      if (!active) return;
+      for (int i = 0; i < symbols.list.size(); i++) {
+        for (int k = 0; k < possibleSymbols.size(); k++) {
+          if (symbols.list[i].Shape == possibleSymbols[k].Shape && symbols.list[i].Color == possibleSymbols[k].Color) {
+              if (frames < 10) {
 
-                if (symbols.list[i].Shape == possibleSymbols[k].Shape && symbols.list[i].Color == possibleSymbols[k].Color) {
-                    if (frames < 10) {
+                  possibleSymbols[k].CenterX += symbols.list[i].CenterX;
+                  possibleSymbols[k].CenterY += symbols.list[i].CenterY;
+                  counter[k]++;
 
-                        possibleSymbols[k].CenterX += symbols.list[i].CenterX;
-                        possibleSymbols[k].CenterY += symbols.list[i].CenterY;
-                        counter[k]++;
-
-                    } else if (std::abs(symbols.list[i].CenterX - mean(possibleSymbols[k].CenterX, counter[k])) < 100 &&
-                               std::abs(symbols.list[i].CenterY - mean(possibleSymbols[k].CenterY, counter[k])) < 100) {
-                        possibleSymbols[k].CenterX += symbols.list[i].CenterX;
-                        possibleSymbols[k].CenterY += symbols.list[i].CenterY;
-                        counter[k]++;
-                    }
-                }
-            }
+              } else if (std::abs(symbols.list[i].CenterX - mean(possibleSymbols[k].CenterX, counter[k])) < 100 &&
+                         std::abs(symbols.list[i].CenterY - mean(possibleSymbols[k].CenterY, counter[k])) < 100) {
+                  possibleSymbols[k].CenterX += symbols.list[i].CenterX;
+                  possibleSymbols[k].CenterY += symbols.list[i].CenterY;
+                  counter[k]++;
+              }
+          }
         }
+      }
     }
 
     void chatterCallback(const navigator_shoot_vision::Symbols &symbols) {
-        frames++;
-        syms = symbols;
-        frameSymbolHolder.push_back(symbols);
-        shapeChecker(symbols);
+      frames++;
+      syms = symbols;
+      frameSymbolHolder.push_back(symbols);
+      shapeChecker(symbols);
     }
 
     bool getShape(navigator_shoot_vision::GetShape::Request &req, navigator_shoot_vision::GetShape::Response &res) {
@@ -95,41 +96,40 @@ class ImageSearcher {
     	if(frames == 0) {
 
     	}
-        if (frames < 10) {
-            std::cout << "Too small of sample frames" << possibleSymbols.size() << std::endl;
-            return false;
-        }
-        for (int j = 0; j < syms.list.size(); j++) {
-            for (int i = 0; i < possibleSymbols.size(); i++) {
-
-                if (req.Shape == possibleSymbols[i].Shape && req.Color == possibleSymbols[i].Color && syms.list[j].Shape == req.Shape &&
-                    syms.list[j].Color == req.Color && counter[i] > 10) {
-                      
-                    if (std::abs(syms.list[j].CenterX - mean(possibleSymbols[i].CenterX, counter[i])) < 100 &&
-                        std::abs(syms.list[j].CenterY - mean(possibleSymbols[i].CenterY, counter[i])) < 100) {
-                        res.symbol = syms.list[j];
-                        lastCallFrame = frames;
-                        return true;
-                    }
-                }
+      if (frames < 10) {
+          std::cout << "Too small of sample frames" << possibleSymbols.size() << std::endl;
+          return false;
+      }
+      for (int j = 0; j < syms.list.size(); j++) {
+        for (int i = 0; i < possibleSymbols.size(); i++) {
+          if (req.Shape == possibleSymbols[i].Shape && req.Color == possibleSymbols[i].Color 
+              && syms.list[j].Shape == req.Shape 
+              && syms.list[j].Color == req.Color 
+              && counter[i] > 10) 
+          {
+            if (std::abs(syms.list[j].CenterX - mean(possibleSymbols[i].CenterX, counter[i])) < 100 &&
+              std::abs(syms.list[j].CenterY - mean(possibleSymbols[i].CenterY, counter[i])) < 100) {
+              res.symbol = syms.list[j];
+              lastCallFrame = frames;
+              return true;
             }
+          }
         }
-        std::cout << "not found" << std::endl;
-        return false;
+      }
+      return false;
     }
     bool getShapeController(std_srvs::SetBool::Request &req, std_srvs::SetBool::Response &res) {
       std_srvs::SetBool msg;
       msg.request.data = req.data;
-        ros::service::call("/shooter_vision/runvision", msg);
-        
-        std::cout<<"Setting active to "<<active<<std::endl;
-        return true;
+      ros::service::call("/shooter_vision/runvision", msg);
+      std::cout<<"Setting active to "<<active<<std::endl;
+      return true;
     }
 };
 
 int main(int argc, char **argv) {
-    ros::init(argc, argv, "smart_shape_finder_server");
-    ImageSearcher imageSearcher;
-    ros::spin();
-    return 0;
+  ros::init(argc, argv, "smart_shape_finder_server");
+  ImageSearcher imageSearcher;
+  ros::spin();
+  return 0;
 }
