@@ -36,24 +36,26 @@ class ShooterVision {
     ros::Publisher chatter_pub;
 
     ros::ServiceServer serviceCommand;
+    std::string camera_topic;
     bool active;
 
   public:
     ShooterVision() :
+      nh_("image_converter"),
       it_(nh_), fp(), 
       blueFinder(navigator_shoot_vision::Symbol::BLUE), 
       redFinder(navigator_shoot_vision::Symbol::RED),
       greenFinder(navigator_shoot_vision::Symbol::GREEN)
     {
       active = false;
+      nh_.param<std::string>("symbol_camera", camera_topic, "/right_camera/image_color");
       serviceCommand = nh_.advertiseService("/shooter_vision/runvision", &ShooterVision::getShapeController, this);
-
       #ifdef DO_DEBUG
       DebugWindow::init();
       #endif
 
       chatter_pub = nh_.advertise<navigator_shoot_vision::Symbols>("found_shapes", 1000);
-      image_sub_ = it_.subscribe("/right_camera/image_color", 1, &ShooterVision::run, this);
+      image_sub_ = it_.subscribe(camera_topic, 1, &ShooterVision::run, this);
     }
 
     bool getShapeController(std_srvs::SetBool::Request &req, std_srvs::SetBool::Response &res) {
