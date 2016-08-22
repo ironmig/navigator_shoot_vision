@@ -53,7 +53,7 @@ class ImageSearcher {
     }
 
     syms = navigator_shoot_vision::Symbols();
-    sub = n.subscribe("found_shapes", 1000, &ImageSearcher::chatterCallback, this);
+    sub = n.subscribe("/image_converter/found_shapes", 1000, &ImageSearcher::chatterCallback, this);
     serviceCommand = n.advertiseService("/shooter_vision/runsmart", &ImageSearcher::getShapeController, this);
     service = n.advertiseService("GetShape", &ImageSearcher::getShape, this);
     active = false;
