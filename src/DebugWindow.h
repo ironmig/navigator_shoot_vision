@@ -2,7 +2,7 @@
 #ifndef DEBUG_WINDOW_H
 #define DEBUG_WINDOW_H
 
-#define DO_DEBUG
+//#define DO_DEBUG
 
 #ifdef DO_DEBUG
 

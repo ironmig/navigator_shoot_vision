@@ -47,7 +47,11 @@ class ShooterVision {
     {
       active = false;
       serviceCommand = nh_.advertiseService("/shooter_vision/runvision", &ShooterVision::getShapeController, this);
+
+      #ifdef DO_DEBUG
       DebugWindow::init();
+      #endif
+
       chatter_pub = nh_.advertise<navigator_shoot_vision::Symbols>("found_shapes", 1000);
       image_sub_ = it_.subscribe("/right_camera/image_color", 1, &ShooterVision::run, this);
     }
