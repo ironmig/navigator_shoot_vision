@@ -109,24 +109,18 @@ class ImageSearcher {
           }
         }
       }
-      return false;
-    }
-    bool getShapeController(std_srvs::SetBool::Request &req, std_srvs::SetBool::Response &res) {
-      std_srvs::SetBool msg;
-      msg.request.data = req.data;
-      ros::service::call("/shooter_vision/runvision", msg);
-      std::cout<<"Setting active to "<<active<<std::endl;
-      res.success = true;
-      return true;
     }
     return false;
   }
+
   bool getShapeController(std_srvs::SetBool::Request &req, std_srvs::SetBool::Response &res) {
     std_srvs::SetBool msg;
     msg.request.data = req.data;
     active = req.data;
+
     ros::service::call("/shooter_vision/runvision", msg);
     std::cout << "Setting active to " << active << std::endl;
+    res.success = true;
     return true;
   }
 };
