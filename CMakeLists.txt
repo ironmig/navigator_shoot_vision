@@ -22,7 +22,6 @@ add_message_files(
 add_service_files(
 	FILES
 	GetShape.srv
-	GetShapeController.srv
 )
 
 generate_messages(

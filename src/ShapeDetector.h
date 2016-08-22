@@ -20,7 +20,14 @@ class ShapeDetector {
 	static bool angleTestTriangle(std::vector<cv::Point> &points);
 	static bool angleTestCirlce(std::vector<cv::Point> &points); //Maybe
 	
-	static bool testRatioCircle(std::vector<cv::Point> &points);
+	static bool testRatioAreaPerimeterCircle(std::vector<cv::Point> &points);
+//	static bool testRatioAreaPerimeterTriangle(std::vector<cv::Point> &points);
+	static bool testRatioAreaPerimeterCross(std::vector<cv::Point> &points);
+	
+	
+	static bool isCross(std::vector<cv::Point> &points);
+	static bool isTriangle(std::vector<cv::Point> &points);
+	static bool isCircle(std::vector<cv::Point> &points);
 	
 };
 

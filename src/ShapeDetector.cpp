@@ -40,26 +40,22 @@ float ShapeDetector::findVarience(std::vector<float> observed) {
 bool ShapeDetector::boundingAreaCross(std::vector<cv::Point> &points) {
   cv::Rect boundingRect = cv::boundingRect(points);
   float area = contourArea(points) / (boundingRect.width * boundingRect.height);
-  if (area >= .43 && area <= .57)
-    return true;
+  if (area >= .43 && area <= .57) return true;
   return false;
 }
 
 bool ShapeDetector::boundingAreaTriangle(std::vector<cv::Point> &points) {
   cv::Rect boundingRect = cv::boundingRect(points);
   float area = contourArea(points) / (boundingRect.width * boundingRect.height);
-  if (area >= .41 && area <= .5)
-    return true;
+  if (area >= .41 && area <= .5) return true;
   return false;
 }
-
 
 bool ShapeDetector::boundingAreaCircle(std::vector<cv::Point> &points) {
   cv::Rect boundingRect = cv::boundingRect(points);
   float area = contourArea(points) / (boundingRect.width * boundingRect.height);
-//    std::cout << area << std::endl;
-  if (area >= .7 && area <= .8)
-    return true;
+  //    std::cout << area << std::endl;
+  if (area >= .7 && area <= .8) return true;
   return false;
 }
 
@@ -77,55 +73,83 @@ bool ShapeDetector::angleTestCross(std::vector<cv::Point> &points) {
   return false;
 }
 
-bool ShapeDetector::angleTestTriangle(std::vector<cv::Point> &points) { //Assuming isoceles triangle and the two congruent angles are larger than the other angle
+bool ShapeDetector::angleTestTriangle(
+    std::vector<cv::Point> &points) {  // Assuming isoceles triangle and the two congruent angles are larger than the other angle
   std::vector<float> angles;
   angles.push_back(findAngle(points[1], points[0], points[2]));
   angles.push_back(findAngle(points[2], points[1], points[0]));
   angles.push_back(findAngle(points[0], points[1], points[2]));
   int min = 180, ind = 0;
-	for(int i =0; i < angles.size(); i ++) {
-		if (angles[i] < min) {
+  for (int i = 0; i < angles.size(); i++) {
+    if (angles[i] < min) {
       min = angles[i];
-			ind = i;
-		}
-	}
-	int inds1, inds2;
-	if (ind == 2) {
-		inds1 = 0;
-		inds2 = 1;
-	}
-	else if(ind == 0) {
-		inds1 = 1;
-		inds2 = 2;
-	}
-	else {
-		inds1 = 0;
-		inds2 = 2;
-	}
-	
+      ind = i;
+    }
+  }
+  int inds1, inds2;
+  if (ind == 2) {
+    inds1 = 0;
+    inds2 = 1;
+  } else if (ind == 0) {
+    inds1 = 1;
+    inds2 = 2;
+  } else {
+    inds1 = 0;
+    inds2 = 2;
+  }
 
-	float v = (180 - angles[ind]) /2; //Not preset values, don't know the exact angles of the triangle since not equalterial
-	float v2 = (180 - angles[inds1] - angles[inds2]);
-	
-	float chiangs = 0;
+  float v = (180 - angles[ind]) / 2;  // Not preset values, don't know the exact angles of the triangle since not equalterial
+  float v2 = (180 - angles[inds1] - angles[inds2]);
+
+  float chiangs = 0;
   chiangs += (angles[inds1] - v) * (angles[inds1] - v) / v;
-	chiangs += (angles[inds2] - v) * (angles[inds2] - v) / v;
-	chiangs += (angles[ind] - v2) * (angles[ind] - v2) /v2;
-	
-//	std::cout<<"Lrg: "<<angles[ind]<<" 1: "<<angles[inds1]<<" 2: "<<angles[inds2]<<std::endl;
-//	std::cout<<v2<<" "<<v<<" "<<v<<std::endl;
-//	std::cout<<"---"<<chiangs<<"----"<<std::endl;
+  chiangs += (angles[inds2] - v) * (angles[inds2] - v) / v;
+  chiangs += (angles[ind] - v2) * (angles[ind] - v2) / v2;
 
-  if (chiangs < 1)
-    return true;
+  //	std::cout<<"Lrg: "<<angles[ind]<<" 1: "<<angles[inds1]<<" 2: "<<angles[inds2]<<std::endl;
+  //	std::cout<<v2<<" "<<v<<" "<<v<<std::endl;
+  //	std::cout<<"---"<<chiangs<<"----"<<std::endl;
+
+  if (chiangs < 1) return true;
   return false;
 }
 
-bool ShapeDetector::testRatioCircle(std::vector<cv::Point> &points) {
-	float a = contourArea(points);
-	float p = arcLength(points, true);
-	float r = 4 * 3.1415 * a / (p * p);
-	if(r > 0.9 && r < 1.1)
+bool ShapeDetector::testRatioAreaPerimeterCircle(std::vector<cv::Point> &points) {
+  float a = contourArea(points);
+  float p = arcLength(points, true);
+  float r = 4 * 3.1415 * a / (p * p);
+  if (r > 0.9 && r < 1.1) return true;
+  return false;
+}
+
+bool ShapeDetector::testRatioAreaPerimeterCross(std::vector<cv::Point> &points) {
+  float a = contourArea(points);
+  float p = arcLength(points, true);
+  float r = 144 / 5 * a / (p * p);
+  if (r > 0.9 && r < 1.1) return true;
+  return false;
+}
+
+bool ShapeDetector::isCross(std::vector<cv::Point> &points) {
+  if (points.size() == 12 && contourArea(points) > 500 && ShapeDetector::angleTestCross(points) &&
+      ShapeDetector::boundingAreaCross(points) && ShapeDetector::testRatioAreaPerimeterCross(points)) {
     return true;
-	return false;
+  }
+  return false;
+}
+
+bool ShapeDetector::isTriangle(std::vector<cv::Point> &points) {
+  if (points.size() == 3 && contourArea(points) > 500 && ShapeDetector::angleTestTriangle(points) &&
+      ShapeDetector::boundingAreaTriangle(points)) {
+    return true;
+  }
+  return false;
+}
+
+bool ShapeDetector::isCircle(std::vector<cv::Point> &points) {
+  if (points.size() > 5 && contourArea(points) > 500 && ShapeDetector::testRatioAreaPerimeterCircle(points) &&
+      ShapeDetector::boundingAreaCircle(points)) {
+    return true;
+  }
+  return false;
 }
