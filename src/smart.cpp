@@ -93,7 +93,7 @@ class ImageSearcher {
     if (frames == 0) {
     }
     if (frames < 10) {
-      std::cout << "Too small of sample frames" << possibleSymbols.size() << std::endl;
+      std::cout << "Too small of sample frames" << frames << std::endl;
       return false;
     }
     for (int j = 0; j < syms.list.size(); j++) {
