@@ -82,6 +82,7 @@ class ImageSearcher {
   }
 
   void chatterCallback(const navigator_shoot_vision::Symbols &symbols) {
+    if (!active) return;
     frames++;
     syms = symbols;
     frameSymbolHolder.push_back(symbols);
