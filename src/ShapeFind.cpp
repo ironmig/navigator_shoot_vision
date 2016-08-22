@@ -42,50 +42,31 @@ void ShapeFind::GetSymbols(Mat frame, navigator_shoot_vision::Symbols *symbols) 
 
   for (int i = 0; i < shapes.size(); i++) {
     if (ShapeDetector::isCross(shapes[i])) {
-      navigator_shoot_vision::Symbol hold;
-      Point center = findCenter(shapes[i]);
-      hold.CenterX = center.x;
-      hold.CenterY = center.y;
-      hold.Color = parseColor;
-      hold.Shape = navigator_shoot_vision::Symbol::CROSS;
-      for (int j = 0; j < shapes[i].size(); j++) {
-        geometry_msgs::Point p;
-        p.x = shapes[i][j].x;
-        p.y = shapes[i][j].y;
-        p.z = 0;
-        hold.points.push_back(p);
-      }
+      navigator_shoot_vision::Symbol hold = fillHold(shapes[i], navigator_shoot_vision::Symbol::CROSS);
       symbols->list.push_back(hold);
     } else if (ShapeDetector::isTriangle(shapes[i])) {
-      navigator_shoot_vision::Symbol hold;
-      Point center = findCenter(shapes[i]);
-      hold.CenterX = center.x;
-      hold.CenterY = center.y;
-      hold.Color = parseColor;
-      hold.Shape = navigator_shoot_vision::Symbol::TRIANGLE;
-      for (int j = 0; j < shapes[i].size(); j++) {
-        geometry_msgs::Point p;
-        p.x = shapes[i][j].x;
-        p.y = shapes[i][j].y;
-        p.z = 0;
-        hold.points.push_back(p);
-      }
+      navigator_shoot_vision::Symbol hold = fillHold(shapes[i], navigator_shoot_vision::Symbol::TRIANGLE);
       symbols->list.push_back(hold);
     } else if (ShapeDetector::isCircle(shapes[i])) {
-      navigator_shoot_vision::Symbol hold;
-      Point center = findCenter(shapes[i]);
-      hold.CenterX = center.x;
-      hold.CenterY = center.y;
-      hold.Color = parseColor;
-      hold.Shape = navigator_shoot_vision::Symbol::CIRCLE;
-      for (int j = 0; j < shapes[i].size(); j++) {
-        geometry_msgs::Point p;
-        p.x = shapes[i][j].x;
-        p.y = shapes[i][j].y;
-        p.z = 0;
-        hold.points.push_back(p);
-      }
+      navigator_shoot_vision::Symbol hold = fillHold(shapes[i], navigator_shoot_vision::Symbol::CIRCLE);
       symbols->list.push_back(hold);
     }
   }
+}
+
+navigator_shoot_vision::Symbol ShapeFind::fillHold(std::vector<cv::Point> shape, std::string symbol) {
+  navigator_shoot_vision::Symbol hold;
+  Point center = findCenter(shape);
+  hold.CenterX = center.x;
+  hold.CenterY = center.y;
+  hold.Color = parseColor;
+  hold.Shape = symbol;
+  for (int j = 0; j < shape.size(); j++) {
+    geometry_msgs::Point p;
+    p.x = shape[j].x;
+    p.y = shape[j].y;
+    p.z = 0;
+    hold.points.push_back(p);
+  }
+  return hold;
 }
