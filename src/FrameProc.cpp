@@ -26,8 +26,11 @@ FrameProc::FrameProc()
 	binary_red_frame = Mat();
 	binary_green_frame = Mat();
 	
-	namedWindow("blured",CV_WINDOW_AUTOSIZE);
-	namedWindow("hsv",CV_WINDOW_AUTOSIZE);
+	//namedWindow("blured",CV_WINDOW_AUTOSIZE);
+	//namedWindow("hsv",CV_WINDOW_AUTOSIZE);
+  //namedWindow("blue",CV_WINDOW_AUTOSIZE);
+  //namedWindow("green",CV_WINDOW_AUTOSIZE);
+  //namedWindow("red",CV_WINDOW_AUTOSIZE);
 }
 void FrameProc::ErodeDilate()
 {
@@ -47,20 +50,24 @@ void FrameProc::ThresholdColors()
 	binary_red_frame = rtemp | rtemp2;
 	inRange(hsv_frame,blue.low,blue.high,binary_blue_frame);
 	inRange(hsv_frame,green.low,green.high,binary_green_frame);
+  
+  //imShow("blue",binary_blue_frame);
+  //imShow("green",binary_green_frame);
+  //imShow("red",binary_red_frame);
 }
 void FrameProc::Prepare(Mat frame)
 {
   rgb_frame = frame;
+  
+  #ifdef DO_DEBUG
 	DebugWindow::UpdateColor(rgb_frame);
+  #endif
 	ErodeDilate();
 	ConvertHSV();
 	ThresholdColors();
 	
-	imshow("blured",rgb_frame);
-	imshow("hsv",hsv_frame);
-	DebugWindow::UpdateRed(binary_red_frame);
-	DebugWindow::UpdateBlue(binary_blue_frame);
-	DebugWindow::UpdateGreen(binary_green_frame);
+	//imshow("blured",rgb_frame);
+	//imshow("hsv",hsv_frame);
 }
 
 Mat FrameProc::GetRed()

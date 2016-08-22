@@ -79,7 +79,9 @@ class ShooterVision {
         greenFinder.GetSymbols(fp.GetGreen(), &symbols);
 
         // Publish to ros
+        #ifdef DO_DEBUG
         DebugWindow::UpdateResults(symbols);
+        #endif
         chatter_pub.publish(symbols);
       }
     }
