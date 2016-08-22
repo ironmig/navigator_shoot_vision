@@ -1,12 +1,12 @@
 string Shape
-string CROSS="CROSS" #p
-string TRIANGLE="TRIANGLE" #t
-string CIRCLE ="CIRCLE" #c
+string CROSS=CROSS
+string TRIANGLE=TRIANGLE
+string CIRCLE =CIRCLE
 
 string Color
-string RED="RED" #r
-string BLUE="BLUE" #b
-string GREEN="GREEN" #g
+string RED=RED
+string BLUE=BLUE
+string GREEN=GREEN
 
 
 uint32 CenterX
