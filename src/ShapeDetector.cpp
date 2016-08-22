@@ -130,25 +130,37 @@ bool ShapeDetector::testRatioAreaPerimeterCross(std::vector<cv::Point> &points) 
   return false;
 }
 
+bool ShapeDetector::testPointAlignmentTriangle(std::vector<cv::Point> &points) {
+	for(int i =0; i < points.size(); i++) {
+		for(int j = 0; j < points.size(); j++) {
+			if(i != j ) {
+				if (std::abs(points[i].x - points[j].x) < 50) {
+					return true;
+				}
+			}
+		}
+	}
+	return false;
+}
+
 bool ShapeDetector::isCross(std::vector<cv::Point> &points) {
-  if (points.size() == 12 && contourArea(points) > 500 && ShapeDetector::angleTestCross(points) &&
-      ShapeDetector::boundingAreaCross(points) && ShapeDetector::testRatioAreaPerimeterCross(points)) {
+  if (points.size() == 12 && contourArea(points) > 500 && testRatioAreaPerimeterCross(points) &&
+     angleTestCross(points) && boundingAreaCross(points)) {
     return true;
   }
   return false;
 }
 
 bool ShapeDetector::isTriangle(std::vector<cv::Point> &points) {
-  if (points.size() == 3 && contourArea(points) > 500 && ShapeDetector::angleTestTriangle(points) &&
-      ShapeDetector::boundingAreaTriangle(points)) {
+  if (points.size() == 3 && contourArea(points) > 500 && testPointAlignmentTriangle(points) && angleTestTriangle(points) && boundingAreaTriangle(points)) {
     return true;
   }
   return false;
 }
 
 bool ShapeDetector::isCircle(std::vector<cv::Point> &points) {
-  if (points.size() > 5 && contourArea(points) > 500 && ShapeDetector::testRatioAreaPerimeterCircle(points) &&
-      ShapeDetector::boundingAreaCircle(points)) {
+  if (points.size() > 5 && contourArea(points) > 500 && testRatioAreaPerimeterCircle(points) &&
+     boundingAreaCircle(points)) {
     return true;
   }
   return false;

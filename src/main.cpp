@@ -53,7 +53,7 @@ class ShooterVision {
       #endif
 
       chatter_pub = nh_.advertise<navigator_shoot_vision::Symbols>("found_shapes", 1000);
-      image_sub_ = it_.subscribe("/right_camera/image_color", 1, &ShooterVision::run, this);
+      image_sub_ = it_.subscribe("/camera/image_color", 1, &ShooterVision::run, this);
     }
 
     bool getShapeController(std_srvs::SetBool::Request &req, std_srvs::SetBool::Response &res) {
