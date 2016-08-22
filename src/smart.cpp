@@ -123,6 +123,7 @@ class ImageSearcher {
       msg.request.data = req.data;
       ros::service::call("/shooter_vision/runvision", msg);
       std::cout<<"Setting active to "<<active<<std::endl;
+      res.success = true;
       return true;
     }
 };
