@@ -1,0 +1,7 @@
+<launch>
+  <node pkg="navigator_shoot_vision" type="vision" name="symbol_vision_finder">
+    <rosparam param="/image_converter/symbol_camera">/front_camera/image_raw</rosparam>
+  </node>
+  <node pkg="navigator_shoot_vision" type="smart_shape_finder_server" name="symbol_vision_fixer">
+  </node>
+</launch>
