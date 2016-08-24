@@ -31,7 +31,7 @@ class ImageSearcher {
                                    navigator_shoot_vision::Symbol::CIRCLE};
   std::string possibleColors[3] = {navigator_shoot_vision::Symbol::RED, navigator_shoot_vision::Symbol::BLUE, navigator_shoot_vision::Symbol::GREEN};
   ros::ServiceServer serviceCommand;
-  int counter[3 * 3];
+  int counter[9]= {0};
   int frames;
   bool active;
   int lastCallFrame;
@@ -51,7 +51,6 @@ class ImageSearcher {
         counter[i * j] = 0;
       }
     }
-
     syms = navigator_shoot_vision::Symbols();
     sub = n.subscribe("/image_converter/found_shapes", 1000, &ImageSearcher::chatterCallback, this);
     serviceCommand = n.advertiseService("/shooter_vision/runsmart", &ImageSearcher::getShapeController, this);
@@ -65,16 +64,17 @@ class ImageSearcher {
     for (int i = 0; i < symbols.list.size(); i++) {
       for (int k = 0; k < possibleSymbols.size(); k++) {
         if (symbols.list[i].Shape == possibleSymbols[k].Shape && symbols.list[i].Color == possibleSymbols[k].Color) {
+          counter[k]++;
+          //Failure happens here
           if (frames < 10) {
+            possibleSymbols[k].CenterX += symbols.list.at(i).CenterX;
+            possibleSymbols[k].CenterY += symbols.list.at(i).CenterY;
+          } else if (std::abs(symbols.list.at(i).CenterX - mean(possibleSymbols[k].CenterX, counter[k])) < 100 &&
+                     std::abs(symbols.list.at(i).CenterY - mean(possibleSymbols[k].CenterY, counter[k])) < 100) {
             possibleSymbols[k].CenterX += symbols.list[i].CenterX;
             possibleSymbols[k].CenterY += symbols.list[i].CenterY;
-            counter[k]++;
-
-          } else if (std::abs(symbols.list[i].CenterX - mean(possibleSymbols[k].CenterX, counter[k])) < 100 &&
-                     std::abs(symbols.list[i].CenterY - mean(possibleSymbols[k].CenterY, counter[k])) < 100) {
-            possibleSymbols[k].CenterX += symbols.list[i].CenterX;
-            possibleSymbols[k].CenterY += symbols.list[i].CenterY;
-            counter[k]++;
+          } else {
+            
           }
         }
       }
@@ -90,7 +90,9 @@ class ImageSearcher {
   }
 
   bool getShape(navigator_shoot_vision::GetShape::Request &req, navigator_shoot_vision::GetShape::Response &res) {
-    if (!active) return false;
+    if (!active) {
+      return false;
+    }
     if (frames == 0) {
     }
     if (frames < 10) {
@@ -117,10 +119,15 @@ class ImageSearcher {
   bool getShapeController(std_srvs::SetBool::Request &req, std_srvs::SetBool::Response &res) {
     std_srvs::SetBool msg;
     msg.request.data = req.data;
+    if (active && !req.data)
+    {
+      frames = 0;
+      lastCallFrame = 0;
+      syms.list.clear();
+      frameSymbolHolder.clear();
+    }
     active = req.data;
-
     ros::service::call("/shooter_vision/runvision", msg);
-    std::cout << "Setting active to " << active << std::endl;
     res.success = true;
     return true;
   }
